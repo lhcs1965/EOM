@@ -1,0 +1,420 @@
+const APP = "movimentos"
+const note_dialog  = new bootstrap.Modal(document.getElementById("note-dialog"))
+// const confirm_dialog = new bootstrap.Modal(document.getElementById("confirm-dialog"))
+const local_filter = document.getElementById("local_filter").innerHTML
+const owner_filter = document.getElementById("owner_filter").innerHTML
+const table_filter = document.getElementById("table_filter").innerHTML
+const field_filter = document.getElementById("field_filter").innerHTML
+var action=""
+// var clear_local_filter = document.getElementById("clear-local-filter")
+
+// clear_local_filter.addEventListener("click",function(){
+//     set_filter('local_filter','')
+// })
+
+function select_all(){
+    var rows = table.rows()
+    rows.every(function(rowIndex,tableLoop,rowLoop){
+        var row = this.data()
+        var ind = row[0]
+        var sel = document.getElementById("sel"+ind)
+        sel.checked = !sel.checked
+    })
+}
+
+function delete_objects(page){
+    var rows = table.rows()
+    rows.every(function(rowIndex,tableLoop,rowLoop){
+        var row = this.data()
+        var ind = row[0]
+        var sel = document.getElementById("sel"+ind)
+        if(sel.checked){
+            delete_item(page,ind)
+        }
+    })
+}
+
+async function delete_item(page,id){
+    // search_dialog.show()
+    // const data = await fetch("db/delete-" + page + ".php?id=" + id)
+    // table.draw()
+    $.ajax({
+        method: "DELETE",
+        url: "db/delete-" + page + ".php?id=" + id,
+        success: function(data){
+            table.draw()
+        }
+    })
+}
+
+function import_objects(act){
+    document.getElementById("cd-header").innerHTML = "IMPORTAR NOVAS COLUNAS"
+    document.getElementById("cd-body").innerHTML = "Importar Colunas das Tabelas selecionados?<BR><BR>Esta operação poderá demorar vários minutos!"
+    action = act
+    confirm_dialog.show()
+}
+
+function btn_filter(name,data){
+    const ret = '<div class="align-items-center d-flex">' 
+              + '<div class="btn-group" role="group">'
+              + '<img class="btn btn-sm btn-warning" '
+              + 'src="/img/funnel.svg" '
+              + 'onclick="set_filter'
+              + "('"+name+"','" + data + "')"
+              + '"></div>&#160;'
+              + data 
+              + '</div>'
+    return ret
+}
+
+function btn_empty(){
+    reload = "db/get-"+APP+".php"+get_fix_filter()
+    table.ajax.url(reload).load()
+}
+
+function get_fix_filter(){
+    const result = "?local_filter=" + document.getElementById("local_filter").innerHTML
+                 + "&owner_filter=" + document.getElementById("owner_filter").innerHTML
+                 + "&table_filter=" + document.getElementById("table_filter").innerHTML
+                 + "&field_filter=" + document.getElementById("field_filter").innerHTML
+                 + "&empty_filter=" + document.getElementById("empty-filter").checked
+    return(result)
+}
+
+function set_filter(filter_name,filter_value){
+    const hide_filter = "hide-"+filter_name.replace("_","-")
+    document.getElementById(hide_filter).toggleAttribute("hidden",filter_value=="")
+    document.getElementById(filter_name).innerHTML = filter_value
+    reload = "db/get-"+APP+".php"+get_fix_filter()
+    table.ajax.url(reload).load()
+    // const url = APP + "-index.php" + get_fix_filter()
+    // window.location.replace(url)
+}
+
+function search_all(){
+    var rows = table.rows()
+    var items = []
+    rows.every(function(rowIndex,tableLoop,rowLoop){
+        var row = this.data()
+        var ind = row[0]
+        var sel = document.getElementById("sel"+ind)
+        if(sel.checked){
+            items.push(row[0])
+        }
+    })
+    window.location.href = "found-field-index.php?items=" + items.toString()
+}
+
+window.addEventListener("load",function() {
+    document.getElementById("hide-local-filter").toggleAttribute("hidden",document.getElementById("local_filter").innerHTML=="")
+    document.getElementById("hide-owner-filter").toggleAttribute("hidden",document.getElementById("owner_filter").innerHTML=="")
+    document.getElementById("hide-table-filter").toggleAttribute("hidden",document.getElementById("table_filter").innerHTML=="")
+    document.getElementById("hide-field-filter").toggleAttribute("hidden",document.getElementById("field_filter").innerHTML=="")
+    // document.getElementById("hide-"+filter_name).toggleAttribute("hidden",filter_value=="")
+})
+
+var table = $('#data-table').DataTable({
+    processing : true,
+    serverSide : true,
+    ordering: true,
+    paging : true,
+    pagingType : 'first_last_numbers',
+    searching: false,
+    search:{
+        return:true
+    },
+    scrollCollapse: false,
+    ajax : "db/get-"+APP+".php?page="+APP,
+    language : { url: 'config/pt-BR.json' },
+    columnDefs: [{ targets: '_all', className:"align-middle"}],
+    order:[],
+    columns:[
+        {
+            data:0,
+            title: '<input type="checkbox" id="sel" onclick="select_all()">',
+            orderable: false,
+            render:function(data,type,row){
+                return '<input type="checkbox" id="sel'+data+'">'
+            },
+            width: 3,
+        },
+        {
+            data:0,
+            title:'ID',
+            orderable: false,
+            visible: false
+        },
+        {
+            data:1,
+            title:'VENCIMENTO',
+            visible:true,
+        },
+        {
+            data:2,
+            title:'PAGAMENTO',
+            // render:function(data,type){
+            //     const ret = '<div class="align-items-center d-flex">' 
+            //               + '<div class="btn-group" role="group">'
+            //               + '<img class="btn btn-sm btn-warning" '
+            //               + 'src="/img/arrow-right-square.svg" '
+            //               + 'onclick="javascript:location.href=' //\'owner-index.php?local_filter='
+            //               + '\'page.php?page=owner&menu=SCHEMAS&over=Tabelas&local_filter='
+            //               + data
+            //               + '\'"></div>&#160;'
+            //               + data 
+            //               + '</div>'
+                
+            //     return ret
+            // }
+        },
+        {
+            data:3,
+            title: "VALOR",
+        },
+        {
+            data:4,
+            title: "TIPO",
+        },
+        {
+            data:5,
+            title: "EMISSÃO",
+        },
+        {
+            data:6,
+            title:'DOCUMENTO',
+            // render:function(data,type,row){
+            //     const ret = '<div class="align-items-center d-flex">' 
+            //               + '<div class="btn-group" role="group">'
+            //               + '<img class="btn btn-sm btn-warning" '
+            //               + 'data-bs-toggle="modal" data-bs-target="#note-dialog" '
+            //               + 'src="/img/edit_16.svg" onclick="show_note_dialog('
+            //               + row[0]
+            //               + ')"></div>&#160;'
+            //               + data 
+            //               + '</div>'
+            //     return ret
+            // }
+        },
+        {
+            data:7,
+            title: "FORNECEDOR",
+        },
+        {
+            data:8,
+            title: "DESCRIÇÃO",
+        },
+        {
+            data:9,
+            title: "VENCENDO",
+        },
+        {
+            data:10,
+            title: "VENCIDA",
+        },
+        {
+            className: "dt-control align-middle",
+            orderable: false,
+            data:      null,
+            defaultContent: "",
+            width: 5
+        },
+        {
+            data:11,
+            title:'EMPRESA',
+            orderable: false,
+            visible: false,
+        },
+        {
+            data:12,
+            title:'OBSERVAÇÕES',
+            orderable: false,
+            visible: false,
+        },
+    ],
+    layout:{
+        topEnd:{
+            search: {
+                placeholder: 'Digite aqui para buscar'
+            }
+        },
+        bottomStart: 'info',
+        bottomEnd: 'paging'
+    },
+})
+
+$('#data-table').on('click','td.dt-control',function(){
+    var tr = $(this).closest('tr')
+    var row = table.row(tr)
+    if(row.child.isShown()){
+        row.child.hide()
+        tr.removeClass('shown')
+    }
+    else{
+        row.child(format_child(row.data())).show()
+        tr.addClass('shown')
+    }
+})
+
+function format_child(d){
+    const result = 
+        "<dl><dd>"+
+        '  <nav>'+
+        '    <div class="nav nav-tabs" id="nav-tab" role="tablist">'+
+        '      <button class="nav-link active" id="osql-tab'+d[0]+'" data-bs-toggle="tab" data-bs-target="#osql'+d[0]+'" type="button" role="tab" aria-controls="osql'+d[0]+'" aria-selected="true" >Schemas SQL</button>'+
+        '      <button class="nav-link"        id="tsql-tab'+d[0]+'" data-bs-toggle="tab" data-bs-target="#tsql'+d[0]+'" type="button" role="tab" aria-controls="tsql'+d[0]+'" aria-selected="false">Tabelas SQL</button>'+
+        '      <button class="nav-link"        id="fsql-tab'+d[0]+'" data-bs-toggle="tab" data-bs-target="#fsql'+d[0]+'" type="button" role="tab" aria-controls="fsql'+d[0]+'" aria-selected="false">Colunas SQL</button>'+
+        '    </div>'+
+        '  </nav>'+
+        '  <div class="tab-content" id="nav-tabContent">'+
+        '    <div class="m-3 tab-pane show active" id="osql'+d[0]+'" role="tabpanel" aria-labelledby="osql-tab'+d[0]+'"><br><pre>'+d[7]+'</pre></div>'+
+        '    <div class="m-3 tab-pane"             id="tsql'+d[0]+'" role="tabpanel" aria-labelledby="tsql-tab'+d[0]+'"><br><pre>'+d[8]+'</pre></div>'+
+        '    <div class="m-3 tab-pane"             id="fsql'+d[0]+'" role="tabpanel" aria-labelledby="fsql-tab'+d[0]+'"><br><pre>'+d[9]+'</pre></div>'+
+        '  </div>'+
+        "</dd></dl>"
+    return(result)
+}
+
+async function show_note_dialog(id) {
+    const data = await fetch("db/get-"+APP+"-note.php?id=" + id)
+    const cols = await data.json()
+
+    document.getElementById("local-id").innerHTML = cols["data"].local_id
+    document.getElementById("local-host").value = cols["data"].local_host
+    document.getElementById("local-name").value = cols["data"].local_name
+    document.getElementById("local-type").value = cols["data"].local_type
+    document.getElementById("local-user").value = cols["data"].local_user
+    document.getElementById("local-pass").value = cols["data"].local_pass
+    document.getElementById("local-note").value = cols["data"].local_note
+    document.getElementById("local-osql").value = cols["data"].local_osql
+    document.getElementById("local-tsql").value = cols["data"].local_tsql
+    document.getElementById("local-fsql").value = cols["data"].local_fsql
+    document.getElementById("note-dialog-title").innerHTML = "EDITAR SERVIDOR"
+
+    note_dialog.show()
+}
+
+async function update_note(){
+    const local_id = document.getElementById("local-id").innerHTML
+    const local_host = document.getElementById("local-host").value
+    const local_name = document.getElementById("local-name").value
+    const local_type = document.getElementById("local-type").value
+    const local_user = document.getElementById("local-user").value
+    const local_pass = document.getElementById("local-pass").value
+    const local_note = document.getElementById("local-note").value
+    const local_osql = document.getElementById("local-osql").value
+    const local_tsql = document.getElementById("local-tsql").value
+    const local_fsql = document.getElementById("local-fsql").value
+    const target_url = function(){
+        if(document.getElementById("note-dialog-title").innerHTML=="EDITAR SERVIDOR"){
+            return "db/put-local-note.php"
+        }else{
+            return "db/post-local-note.php"
+        }
+    }
+
+    $.ajax({
+        method: "POST",
+        url: target_url(),
+        data: {
+            id: local_id,
+            host: local_host,
+            name: local_name,
+            type: local_type,
+            user: local_user,
+            pass: local_pass,
+            note: local_note,
+            osql: local_osql,
+            tsql: local_tsql,
+            fsql: local_fsql
+        },
+        success: function(data){
+            table.draw()
+        }
+    })
+}
+
+
+// function select_all(){
+//     var rows = table.rows()
+//     rows.every(function(rowIndex,tableLoop,rowLoop){
+//         var row = this.data()
+//         var ind = row[0]
+//         var sel = document.getElementById("sel"+ind)
+//         sel.checked = !sel.checked
+//     })
+// }
+
+// function import_objects(act){
+//     document.getElementById("cd-header").innerHTML = "IMPORTAR NOVOS SCHEMAS"
+//     document.getElementById("cd-body").innerHTML = "Importar Schemas dos servidores selecionados?<BR><BR>Esta operação poderá demorar vários minutos!"
+//     action = act
+//     confirm_dialog.show()
+// }
+
+// function delete_objects(act){
+//     document.getElementById("cd-header").innerHTML = "EXLUIR SERVIDORES"
+//     document.getElementById("cd-body").innerHTML = "Excluir Servidores selecionados?<BR><BR>Todos os Schemas, Tabelas e Colunas também serão excluídos!"
+//     action = act
+//     confirm_dialog.show()
+// }
+
+// function confirm(){
+//     if(action == "import"){
+//         search_all()
+//     } else if(action == "delete"){
+//         delete_all()
+//     }
+// }
+
+// function insert_objects(){
+//     document.getElementById(APP+"-id").innerHTML = null
+//     document.getElementById(APP+"-host").value = null
+//     document.getElementById(APP+"-name").value = null
+//     document.getElementById(APP+"-type").value = null
+//     document.getElementById(APP+"-user").value = null
+//     document.getElementById(APP+"-pass").value = null
+//     document.getElementById(APP+"-note").value = null
+//     document.getElementById(APP+"-osql").value = null
+//     document.getElementById(APP+"-tsql").value = null
+//     document.getElementById(APP+"-fsql").value = null
+//     document.getElementById("note-dialog-title").innerHTML = "NOVO SERVIDOR"
+
+//     note_dialog.show()
+// }
+
+
+
+// function search_all(){
+//     var rows = table.rows()
+//     var items = []
+//     rows.every(function(rowIndex,tableLoop,rowLoop){
+//         var row = this.data()
+//         var ind = row[0]
+//         var sel = document.getElementById("sel"+ind)
+//         if(sel.checked){
+//             items.push(row[0])
+//         }
+//     })
+//     window.location.href = "found-owner-index.php?items=" + items.toString()
+// }
+
+// function delete_all(){
+//     var rows = table.rows()
+//     rows.every(function(rowIndex,tableLoop,rowLoop){
+//         var row = this.data()
+//         var ind = row[0]
+//         var sel = document.getElementById("sel"+ind)
+//         if(sel.checked){
+//             delete_item(ind)
+//         }
+//     })
+// }
+
+// async function delete_item(id){
+//     search_dialog.show()
+//     const data = await fetch("db/delete-"+APP+".php?id="+id)
+//     search_dialog.hide()
+//     table.draw()
+// }
+
+
