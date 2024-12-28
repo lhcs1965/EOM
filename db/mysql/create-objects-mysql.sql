@@ -101,7 +101,7 @@ SELECT
 	m.vencimento = CURDATE() AS vencendo,
 	m.vencimento < CURDATE() AND ISNULL(m.pagamento) AS vencida,
     e.nome_fantasia AS empresa,
-	m.obs 
+	CAST(m.obs AS text) as obs 
 FROM
 	eom.movimentos m,
 	eom.contas c,

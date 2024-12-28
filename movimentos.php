@@ -2,7 +2,7 @@
 <html lang="pt-br">
     <?php
         $page = "movimentos";
-        $menu = $page; //$_GET["menu"];
+        $menu = strtoupper($page); //$_GET["menu"];
         $over = $page; //$_GET["over"];
         $local_filter = $_GET["local_filter"] ?? null;
         $owner_filter = $_GET["owner_filter"] ?? null;
@@ -11,7 +11,7 @@
         $empty_filter = $_GET["empty_filter"] ?? null;
         $menu_items = [
             ["Inicio"   ,"index.php"],
-            ["Movimentos","movimentos.php"],
+            ["MOVIMENTOS","movimentos.php"],
             ["Resumo"   ,"resumo.php"],
             ["Contas"   ,"contas.php"],
         ];
@@ -24,11 +24,10 @@
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
         <title>FC - <?=$menu?></title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-        <link rel='stylesheet' href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
-        <!-- <link rel='stylesheet' href='/css/dataTables.dataTables.css'> -->
-        <link rel='stylesheet' href='css/dic.css'>
+        <link rel='stylesheet' href='css/bootstrap/bootstrap.min.css'>
+        <link rel='stylesheet' href='css/datatables/dataTables.bootstrap5.css'>
+        <link rel='stylesheet' href='css/datatables/dataTables.dataTables.css'>
+        <link rel='stylesheet' href='css/custom.css'>
     </head>
     <body>
         <div class="d-flex flex-row p-3 fixed-top justify-content-between align-items-center bg-success text-bg-primary fw-bold">
@@ -210,10 +209,11 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+        <script src='js/jquery-3.7.1.js'></script>
+        <script src='js/bootstrap/bootstrap.bundle.min.js'></script>
+        <script src='js/datatables/dataTables.js'></script>
+        <script src="js/datatables/moment.min.js"></script>
+        <script src="js/datatables/dateTime.js"></script>
         <script src="js/<?=$page?>.js"></script>
     </body>
 </html>

@@ -148,11 +148,97 @@ var table = $('#data-table').DataTable({
             data:1,
             title:'VENCIMENTO',
             visible:true,
+            render: DataTable.render.datetime('DD-MM-YYYY')
         },
         {
             data:2,
             title:'PAGAMENTO',
-            // render:function(data,type){
+            render: DataTable.render.datetime('DD-MM-YYYY'),
+        },
+        {
+            data:3,
+            title: "VALOR",
+            orderable: false,
+            className: 'dt-right',
+            render: DataTable.render.number(".",",",2,"R$ ","  ")
+        },
+        {
+            data:4,
+            title: "TIPO",
+        },
+        {
+            data:5,
+            title: "CONTA",
+        },
+        {
+            data:6,
+            title: "EMISSÃO",
+            render: DataTable.render.datetime('DD-MM-YYYY'),
+        },
+        {
+            data:7,
+            title:'DOCUMENTO',
+        },
+        {
+            data:8,
+            title: "FORNECEDOR",
+        },
+        {
+            data:9,
+            title: "DESCRIÇÃO",
+        },
+        {
+            data:10,
+            title: "VENCENDO",
+            orderable: false,
+            class:"dt-center",
+            render:function(data,type,row){
+                return (data==true ? '<i class="bi bi-check-circle-fill fs-6"></i>' : '')
+            },
+            width: 3,
+        },
+        {
+            data:11,
+            title: "VENCIDA",
+            orderable: false,
+            render:function(data,type,row){
+                return (data==true ? '<i class="bi bi-check-circle-fill fs-6 text-danger"></i>' : '')
+            },
+            width: 3,
+        },
+        {
+            className: "dt-control align-middle",
+            orderable: false,
+            data:      null,
+            defaultContent: "",
+            width: 5
+        },
+        {
+            data:12,
+            title:'EMPRESA',
+            orderable: false,
+            visible: false,
+        },
+        {
+            data:13,
+            title:'OBSERVAÇÕES',
+            orderable: false,
+            visible: false,
+        },
+                    // render:function(data,type,row){
+            //     const ret = '<div class="align-items-center d-flex">' 
+            //               + '<div class="btn-group" role="group">'
+            //               + '<img class="btn btn-sm btn-warning" '
+            //               + 'data-bs-toggle="modal" data-bs-target="#note-dialog" '
+            //               + 'src="/img/edit_16.svg" onclick="show_note_dialog('
+            //               + row[0]
+            //               + ')"></div>&#160;'
+            //               + data 
+            //               + '</div>'
+            //     return ret
+            // }
+
+                    // render:function(data,type){
             //     const ret = '<div class="align-items-center d-flex">' 
             //               + '<div class="btn-group" role="group">'
             //               + '<img class="btn btn-sm btn-warning" '
@@ -166,70 +252,7 @@ var table = $('#data-table').DataTable({
                 
             //     return ret
             // }
-        },
-        {
-            data:3,
-            title: "VALOR",
-        },
-        {
-            data:4,
-            title: "TIPO",
-        },
-        {
-            data:5,
-            title: "EMISSÃO",
-        },
-        {
-            data:6,
-            title:'DOCUMENTO',
-            // render:function(data,type,row){
-            //     const ret = '<div class="align-items-center d-flex">' 
-            //               + '<div class="btn-group" role="group">'
-            //               + '<img class="btn btn-sm btn-warning" '
-            //               + 'data-bs-toggle="modal" data-bs-target="#note-dialog" '
-            //               + 'src="/img/edit_16.svg" onclick="show_note_dialog('
-            //               + row[0]
-            //               + ')"></div>&#160;'
-            //               + data 
-            //               + '</div>'
-            //     return ret
-            // }
-        },
-        {
-            data:7,
-            title: "FORNECEDOR",
-        },
-        {
-            data:8,
-            title: "DESCRIÇÃO",
-        },
-        {
-            data:9,
-            title: "VENCENDO",
-        },
-        {
-            data:10,
-            title: "VENCIDA",
-        },
-        {
-            className: "dt-control align-middle",
-            orderable: false,
-            data:      null,
-            defaultContent: "",
-            width: 5
-        },
-        {
-            data:11,
-            title:'EMPRESA',
-            orderable: false,
-            visible: false,
-        },
-        {
-            data:12,
-            title:'OBSERVAÇÕES',
-            orderable: false,
-            visible: false,
-        },
+
     ],
     layout:{
         topEnd:{
@@ -257,20 +280,10 @@ $('#data-table').on('click','td.dt-control',function(){
 
 function format_child(d){
     const result = 
-        "<dl><dd>"+
-        '  <nav>'+
-        '    <div class="nav nav-tabs" id="nav-tab" role="tablist">'+
-        '      <button class="nav-link active" id="osql-tab'+d[0]+'" data-bs-toggle="tab" data-bs-target="#osql'+d[0]+'" type="button" role="tab" aria-controls="osql'+d[0]+'" aria-selected="true" >Schemas SQL</button>'+
-        '      <button class="nav-link"        id="tsql-tab'+d[0]+'" data-bs-toggle="tab" data-bs-target="#tsql'+d[0]+'" type="button" role="tab" aria-controls="tsql'+d[0]+'" aria-selected="false">Tabelas SQL</button>'+
-        '      <button class="nav-link"        id="fsql-tab'+d[0]+'" data-bs-toggle="tab" data-bs-target="#fsql'+d[0]+'" type="button" role="tab" aria-controls="fsql'+d[0]+'" aria-selected="false">Colunas SQL</button>'+
-        '    </div>'+
-        '  </nav>'+
-        '  <div class="tab-content" id="nav-tabContent">'+
-        '    <div class="m-3 tab-pane show active" id="osql'+d[0]+'" role="tabpanel" aria-labelledby="osql-tab'+d[0]+'"><br><pre>'+d[7]+'</pre></div>'+
-        '    <div class="m-3 tab-pane"             id="tsql'+d[0]+'" role="tabpanel" aria-labelledby="tsql-tab'+d[0]+'"><br><pre>'+d[8]+'</pre></div>'+
-        '    <div class="m-3 tab-pane"             id="fsql'+d[0]+'" role="tabpanel" aria-labelledby="fsql-tab'+d[0]+'"><br><pre>'+d[9]+'</pre></div>'+
-        '  </div>'+
-        "</dd></dl>"
+        "<dl>" +
+        "<dd>" + d[12] + "</dd>" +
+        "<dd>" + d[13] + "</dd>" +
+        "</dl>"
     return(result)
 }
 

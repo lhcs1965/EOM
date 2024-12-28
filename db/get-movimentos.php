@@ -52,7 +52,7 @@ if(isset($_REQUEST["order"][0]["column"])){
         .$columns[$_REQUEST["order"][0]["column"]]."   "
         .$_REQUEST['order'][0]['dir'];
 }else{
-    $sql_order = "";
+    $sql_order = " ORDER BY ID";
 }
 //limit
 if(isset($_REQUEST['start']) && $_REQUEST['length'] != -1) {
@@ -82,7 +82,7 @@ while($data_row = $cursor->fetch(PDO::FETCH_ASSOC)){
     $data_col[] = $data_row["documento"];
     $data_col[] = $data_row["fornecedor"];
     $data_col[] = $data_row["descricao"];
-    $data_col[] = $data_row["vencendo"];
+    $data_col[] = $data_row["pagamento"]>$data_row["vencimento"];//$data_row["vencendo"];
     $data_col[] = $data_row["vencida"];
     $data_col[] = $data_row["empresa"];
     $data_col[] = $data_row["obs"];
