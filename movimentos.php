@@ -33,8 +33,9 @@
         <div class="d-flex flex-row p-3 fixed-top justify-content-between align-items-center bg-success text-bg-primary fw-bold">
             <div class="col-sm-auto">
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-light" onclick="import_objects('delete','<?=$page?>')" data-toggle="tooltip" title="Importar <?=$over?> dos <?=$menu?> selecionados">
-                        <i class="bi bi-file-earmark-arrow-down"></i>    
+                    <button type="button" class="btn btn-light" onclick="import_objects('delete','<?=$page?>')" data-toggle="tooltip" title="Importar arquivox XML das NFe">
+                        <i class="bi bi-file-earmark-arrow-down"></i>
+                        Importar NFe    
                     </button>
                     <button type="button" class="btn btn-light" onclick="delete_objects('delete','<?=$page?>')" data-toggle="tooltip" title="Excluir <?=$menu?> selecionados com todas as <?=$over?>">
                         <i class="bi bi-trash3"></i>
@@ -95,8 +96,19 @@
             </div>
         </div>
         <div class='container-fluid mt-4 pt-5 px-4'>
-            <br>
-            <table id='data-table' class='table display nowarp ' style='width:100%'>
+            <div class="btn-group" role="group">
+                <button type="button" id="teste1" class="btn btn-sm btn-warning" disabled>Pago Hoje</button>
+                <button type="button" id="teste2" class="btn btn-sm btn-warning" >Pago Hoje</button>
+            </div>
+            <span id="hide-local-filter" >
+                &#160;
+                <b>servidor=[&#160;<span class="text-warning" id="local_filter"><?=$local_filter?></span>&#160;]</b>
+                <a href="javascript:void(0)" onclick="set_filter('local_filter','')" class="text-warning text-decoration-none">
+                    <i class="bi bi-x"></i>
+                </a>
+            </span>
+
+            <table id='data-table' class='table display nowarp small table-hover' style='width:100%'>
                 <thead></thead>
                 <tbody></tbody>
             </table>

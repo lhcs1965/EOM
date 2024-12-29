@@ -17,11 +17,10 @@ $columns = array(
     "documento",
     "fornecedor",
     "descricao",
-    "vencendo",
-    "vencida",
+    "vence",
     "empresa",
     "obs");
-$sql_cols = "id,vencimento,pagamento,valor,tipo,conta,emissao,documento,fornecedor,descricao,vencendo,vencida,empresa,obs";
+$sql_cols = "id,vencimento,pagamento,valor,tipo,conta,emissao,documento,fornecedor,descricao,vence,empresa,obs";
 $sql_from = "FROM vw_movimentos";
 $sql_where = "WHERE 1=1 ";
 
@@ -82,8 +81,7 @@ while($data_row = $cursor->fetch(PDO::FETCH_ASSOC)){
     $data_col[] = $data_row["documento"];
     $data_col[] = $data_row["fornecedor"];
     $data_col[] = $data_row["descricao"];
-    $data_col[] = $data_row["pagamento"]>$data_row["vencimento"];//$data_row["vencendo"];
-    $data_col[] = $data_row["vencida"];
+    $data_col[] = $data_row["vence"];
     $data_col[] = $data_row["empresa"];
     $data_col[] = $data_row["obs"];
     $data[] = $data_col;

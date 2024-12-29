@@ -119,7 +119,7 @@ var table = $('#data-table').DataTable({
     ordering: true,
     paging : true,
     pagingType : 'first_last_numbers',
-    searching: false,
+    searching: true,
     search:{
         return:true
     },
@@ -128,6 +128,13 @@ var table = $('#data-table').DataTable({
     language : { url: 'config/pt-BR.json' },
     columnDefs: [{ targets: '_all', className:"align-middle"}],
     order:[],
+    createdRow: function( row, data, dataIndex){
+        if( data[10] == "Hoje"){
+            $(row).addClass('fw-bold')
+        } else if(data[10] == "Vencida"){
+            $(row).addClass('fw-bold bg-danger-subtle')
+        }
+    },
     columns:[
         {
             data:0,
@@ -173,6 +180,7 @@ var table = $('#data-table').DataTable({
         {
             data:6,
             title: "EMISSÃO",
+            // className: 'dt-right',
             render: DataTable.render.datetime('DD-MM-YYYY'),
         },
         {
@@ -189,22 +197,8 @@ var table = $('#data-table').DataTable({
         },
         {
             data:10,
-            title: "VENCENDO",
-            orderable: false,
-            class:"dt-center",
-            render:function(data,type,row){
-                return (data==true ? '<i class="bi bi-check-circle-fill fs-6"></i>' : '')
-            },
-            width: 3,
-        },
-        {
-            data:11,
-            title: "VENCIDA",
-            orderable: false,
-            render:function(data,type,row){
-                return (data==true ? '<i class="bi bi-check-circle-fill fs-6 text-danger"></i>' : '')
-            },
-            width: 3,
+            title: "VENCE",
+            orderable: true,
         },
         {
             className: "dt-control align-middle",
@@ -214,13 +208,13 @@ var table = $('#data-table').DataTable({
             width: 5
         },
         {
-            data:12,
+            data:11,
             title:'EMPRESA',
             orderable: false,
             visible: false,
         },
         {
-            data:13,
+            data:12,
             title:'OBSERVAÇÕES',
             orderable: false,
             visible: false,
@@ -281,8 +275,8 @@ $('#data-table').on('click','td.dt-control',function(){
 function format_child(d){
     const result = 
         "<dl>" +
+        "<dd>" + d[11] + "</dd>" +
         "<dd>" + d[12] + "</dd>" +
-        "<dd>" + d[13] + "</dd>" +
         "</dl>"
     return(result)
 }

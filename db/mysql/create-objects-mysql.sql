@@ -71,7 +71,7 @@ CREATE TABLE movimentos (
     pagamento date DEFAULT NULL,
     conta_id bigint NOT NULL DEFAULT 1,
     fornecedor_id bigint NOT NULL DEFAULT 1,
-    obs longtext,
+    obs long,
     CONSTRAINT PK_movimentos 
         PRIMARY KEY (id),
     CONSTRAINT FK_movimentos_conta 
@@ -86,29 +86,42 @@ CREATE TABLE movimentos (
         ON UPDATE CASCADE
 );
 
-CREATE VIEW vw_movimentos AS
+CREATE OR REPLACE VIEW vw_movimentos AS
 SELECT
-	m.id,
-	m.vencimento,
+    m.id,
+    m.vencimento,
     m.pagamento,
-	m.valor,
-	c.operacao AS tipo,
-	c.nome AS conta,
-	m.data_emissao AS emissao,
-	m.documento,
-	f.nome_fantasia AS fornecedor,
-	m.descricao,
-	m.vencimento = CURDATE() AS vencendo,
-	m.vencimento < CURDATE() AND ISNULL(m.pagamento) AS vencida,
+    m.valor,
+    c.operacao AS tipo,
+    c.nome AS conta,
+    m.data_emissao AS emissao,
+    m.documento,
+    f.nome_fantasia AS fornecedor,
+    m.descricao,
+    CASE 
+	    WHEN m.pagamento IS NOT NULL
+	    THEN 'Quitada'
+    	WHEN m.vencimento < CURDATE() AND ISNULL(m.pagamento)
+    	THEN 'Vencida'
+    	WHEN m.vencimento = CURDATE() 
+    	THEN 'Hoje'
+    	WHEN m.vencimento = DATE_ADD(CURDATE(), INTERVAL 1 DAY) 
+    	THEN 'Amanhã'
+    	WHEN WEEKOFYEAR(m.vencimento)=WEEKOFYEAR(CURDATE()) 
+    	THEN 'Esta Semana'
+    	WHEN WEEKOFYEAR(m.vencimento)=WEEKOFYEAR(DATE_ADD(CURDATE(),interval 7 DAY))
+    	THEN 'Proxima Semana'
+    	ELSE 'Em Breve'
+    END AS vencendo,
+    m.vencimento < CURDATE() AND ISNULL(m.pagamento) AS vencida,
     e.nome_fantasia AS empresa,
-	CAST(m.obs AS text) as obs 
+    m.obs
 FROM
-	eom.movimentos m,
-	eom.contas c,
-	eom.fornecedores f, 
+    eom.movimentos m,
+    eom.contas c,
+    eom.fornecedores f, 
     eom.empresas e
 WHERE 
-	c.id = m.conta_id AND 
-	f.id = m.fornecedor_id AND
+    c.id = m.conta_id AND 
+    f.id = m.fornecedor_id AND
     e.id = c.empresa_id
-
