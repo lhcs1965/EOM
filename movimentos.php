@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <?php
+        $empresa = $_GET["empresa"] ?? "MATRIZ"; 
         $page = "movimentos";
         $menu = strtoupper($page); //$_GET["menu"];
         $over = $page; //$_GET["over"];
@@ -25,50 +26,12 @@
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
         <title>FC - <?=$menu?></title>
         <link rel='stylesheet' href='css/bootstrap/bootstrap.min.css'>
-        <link rel='stylesheet' href='css/datatables/dataTables.bootstrap5.css'>
-        <link rel='stylesheet' href='css/datatables/dataTables.dataTables.css'>
+        <!-- <link rel='stylesheet' href='css/datatables/dataTables.bootstrap5.css'> -->
+        <!-- <link rel='stylesheet' href='css/datatables/dataTables.dataTables.css'> -->
         <link rel='stylesheet' href='css/custom.css'>
     </head>
     <body>
         <div class="d-flex flex-row p-3 fixed-top justify-content-between align-items-center bg-success text-bg-primary">
-            <div class="col-sm-auto">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-light" onclick="import_objects('delete','<?=$page?>')" data-toggle="tooltip" title="Importar arquivox XML das NFe">
-                        <i class="bi bi-file-earmark-arrow-down"></i>
-                        Importar NFe    
-                    </button>
-                </div>
-            </div>
-            <div class="col-sm-auto text-light">
-                <a href="javascript:void(0)" onclick="set_filter('local_filter','SIGRAH.pbh')" class="btn btn-sm btn-outline-light text-decoration-none fw-bold">
-                    CONTAS
-                </a>
-            </div>
-            
-            <div class="col-sm-auto">
-            <span class="h6">VENCE [</span>
-                <input class="form-check-input" type="checkbox" id="cb-quitada" value="" onclick="set_fix_filter()">
-                Quitadas
-                &#160;&#160;
-                <input class="form-check-input" type="checkbox" id="cb-vencida" value="" onclick="set_fix_filter()" checked>
-                Vencidas
-                &#160;&#160;
-                <input class="form-check-input" type="checkbox" id="cb-hoje" value="" onclick="set_fix_filter()" checked>
-                Hoje
-                &#160;&#160;
-                <input class="form-check-input" type="checkbox" id="cb-amanha" value="" onclick="set_fix_filter()" checked>
-                Amanhã
-                &#160;&#160;
-                <input class="form-check-input" type="checkbox" id="cb-semana" value="" onclick="set_fix_filter()" checked>
-                Nesta semana
-                &#160;&#160;
-                <input class="form-check-input" type="checkbox" id="cb-proxima" value="" onclick="set_fix_filter()" checked>
-                Na próxima semana&#160;&#160;
-                <input class="form-check-input" type="checkbox" id="cb-breve" value="" onclick="set_fix_filter()" checked>
-                Em breve
-                <span class="h6">]</span>
-            </div>
-            
             <div class="col-sm-auto">
                 <div class="dropdown">
                     <a href="#" class="text-light text-decoration-none dropdown-toggle" role="button" data-bs-toggle="dropdown">
@@ -79,10 +42,58 @@
                     </ul>
                 </div>
             </div>
+            <div class="col-sm-auto">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-light" onclick="import_objects('delete','<?=$page?>')" data-toggle="tooltip" title="Importar arquivox XML das NFe">
+                        <i class="bi bi-file-earmark-arrow-down"></i>
+                        Importar NFe    
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-auto">
+                <div class="card p-2">
+                    <small>
+                        <span class="h6">Situação:</span>
+                        &#160;&#160;
+                        <input class="form-check-input" type="checkbox" id="cb-vencida" value="" onclick="set_fix_filter()" checked>
+                        Vencidas
+                        &#160;&#160;
+                        <input class="form-check-input" type="checkbox" id="cb-quitada" value="" onclick="set_fix_filter()">
+                        Quitadas
+                    </small>
+                </div>
+            </div>
+            <div class="col-sm-auto">
+                <div class="card p-2">
+                    <small>
+                        <span class="h6">Vence:</span>
+                        &#160;&#160;
+                        <input class="form-check-input" type="checkbox" id="cb-hoje" value="" onclick="set_fix_filter()" checked>
+                        Hoje
+                        &#160;&#160;
+                        <input class="form-check-input" type="checkbox" id="cb-amanha" value="" onclick="set_fix_filter()" checked>
+                        Amanhã
+                        &#160;&#160;
+                        <input class="form-check-input" type="checkbox" id="cb-semana" value="" onclick="set_fix_filter()" checked>
+                        Nesta semana
+                        &#160;&#160;
+                        <input class="form-check-input" type="checkbox" id="cb-proxima" value="" onclick="set_fix_filter()" checked>
+                        Na próxima semana&#160;&#160;
+                        <input class="form-check-input" type="checkbox" id="cb-breve" value="" onclick="set_fix_filter()" checked>
+                        Em breve
+                    </small>
+                </div>
+            </div>
+            <div class="col-md-auto"></div>
+            <div class="col-sm-auto text-light">
+                <a href="javascript:void(0)" onclick="troca_empresa()" class="btn btn-sm btn-outline-light text-decoration-none fw-bold">
+                    <span id="empresa"><?=$empresa?></span>
+                </a>
+            </div>
         </div>
         <div class='container-fluid mt-5 pt-5 px-4'>
             <div class="dropdown">
-                <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-md btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     Aplicar ações sobre as linhas selecionadas
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -93,7 +104,8 @@
                     <li><button class="dropdown-item" type="button">Aplicar conta débito padrão</button></li>
                 </ul>
             </div>
-            <table id='data-table' class='table display nowarp small table-hover' style='width:100%'>
+            <table id='data-table' class='table table-hover table-striped small' style='width:100%'>
+
                 <thead></thead>
                 <tbody></tbody>
             </table>

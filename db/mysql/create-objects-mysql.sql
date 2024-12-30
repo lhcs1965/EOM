@@ -8,10 +8,12 @@ CREATE TABLE empresas(
     cnpj varchar(18),
     razao_social varchar(128),
     nome_fantasia varchar(128),
-    CONSTRAINT PK_empresas PRIMARY KEY (id)
+    codigo varchar(10) NOT NULL,
+    CONSTRAINT PK_empresas PRIMARY KEY (id),
+    CONSTRAINT UK_empresas_unique UNIQUE KEY (codigo)
 );
 
-INSERT INTO empresas (nome_fantasia) VALUES ('MATRIZ');
+INSERT INTO empresas (nome_fantasia,codigo) VALUES ('MATRIZ','MATRIZ');
 
 -- contas
 
@@ -114,7 +116,7 @@ SELECT
     	ELSE 6 -- 'Em Breve'
     END AS vence,
     m.vencimento < CURDATE() AND ISNULL(m.pagamento) AS vencida,
-    e.nome_fantasia AS empresa,
+    e.codigo AS empresa,
     m.obs
 FROM
     eom.movimentos m,

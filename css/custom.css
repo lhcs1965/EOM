@@ -17,22 +17,26 @@ tfoot input {
     font-weight: bold;
 }
 
-table.dataTable thead tr{
-    background-color: #0d6efd;
+.vencida{
+    /* color: red; */
+    background-color: rgb(255, 255, 100);
+    font-weight: bold;
+}
+.vencendo{
+    /* color:black; */
+    background-color: rgb(255, 255, 240);
+    font-weight: bold;
 }
 
+/*
 table.dataTable th{
     font-size: 0.75em; 
-    color: white;
 }
 
-table.dataTable td{
+ table.dataTable td{
     font-size: 0.75em;
-    /* line-height: 0.75em; */
-}
+} 
+*/
 
 
-/* table.dataTable tbody td {
-    vertical-align: center;
-} */
 

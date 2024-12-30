@@ -1,6 +1,7 @@
 const APP = "movimentos"
 function get_fix_filter(){
-    const result = "?quitada=" + document.getElementById("cb-quitada").checked
+    const result = "?empresa=" + document.getElementById("empresa").innerHTML
+                 + "&quitada=" + document.getElementById("cb-quitada").checked
                  + "&vencida=" + document.getElementById("cb-vencida").checked
                  + "&hoje=" + document.getElementById("cb-hoje").checked
                  + "&amanha=" + document.getElementById("cb-amanha").checked
@@ -9,9 +10,14 @@ function get_fix_filter(){
                  + "&breve=" + document.getElementById("cb-breve").checked
     return(result)
 }
+
 function set_fix_filter(){
     reload = "db/get-"+APP+".php"+get_fix_filter()
     table.ajax.url(reload).load()
+}
+
+function troca_empresa(){
+
 }
 
 const note_dialog  = new bootstrap.Modal(document.getElementById("note-dialog"))
@@ -121,7 +127,12 @@ var table = $('#data-table').DataTable({
     serverSide : true,
     ordering: true,
     paging : true,
+    pageLength: 20,
     pagingType : 'first_last_numbers',
+    lengthMenu: [
+        [10,15,20,25,50,100],
+        [10,15,20,25,50,100]
+    ],
     searching: true,
     search:{
         return:true
@@ -132,10 +143,10 @@ var table = $('#data-table').DataTable({
     columnDefs: [{ targets: '_all', className:"align-middle"}],
     order:[],
     createdRow: function( row, data, dataIndex){
-        if( data[10] == 2){
+        if(data[10] == 2){
             $(row).addClass('fw-bold')
         } else if(data[10] == 1){
-            $(row).addClass('fw-bold bg-danger-subtle')
+            $(row).addClass('fw-bold bg-warning-subtle')
         }
     },
     columns:[
@@ -169,8 +180,8 @@ var table = $('#data-table').DataTable({
             data:3,
             title: "VALOR",
             orderable: false,
-            className: 'dt-right',
-            render: DataTable.render.number(".",",",2,"R$ ","  ")
+            className: 'text-end',
+            render: DataTable.render.number(".",",",2,"R$ ","  "),
         },
         {
             data:4,
@@ -185,6 +196,7 @@ var table = $('#data-table').DataTable({
             title: "EMISSÃO",
             // className: 'dt-right',
             render: DataTable.render.datetime('DD-MM-YYYY'),
+            visible: false,
         },
         {
             data:7,
@@ -205,14 +217,18 @@ var table = $('#data-table').DataTable({
             render: function(data,type,row){
                 const status=[
                     'Quitada',
-                    'Vencida',
+                    'VENCIDA',
                     'Hoje',
                     'Amanhã',
                     'Nesta Semana',
                     'Na próxima Semana',
                     'Em breve'
                 ]
-                return status[data]
+                if(data==1){
+                    return '<div class="text-danger fw-bold">'+status[data]+'</div>'
+                } else {
+                    return status[data]
+                }
             }
         },
         {
@@ -263,15 +279,6 @@ var table = $('#data-table').DataTable({
             // }
 
     ],
-    layout:{
-        topEnd:{
-            search: {
-                placeholder: 'Digite aqui para buscar'
-            }
-        },
-        bottomStart: 'info',
-        bottomEnd: 'paging'
-    },
 })
 
 $('#data-table').on('click','td.dt-control',function(){
@@ -292,7 +299,8 @@ function format_child(d){
         "<dl>" +
         "<dd>" + d[11] + "</dd>" +
         "<dd>" + d[12] + "</dd>" +
-        "</dl>"
+        "</dl>"+
+        "<dl>Emitada em:<dd>"+d[6]+"</dd:</dl>"
     return(result)
 }
 

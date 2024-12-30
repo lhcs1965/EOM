@@ -1,6 +1,7 @@
 <?php
 
 require_once("db-connection.php");
+$empresa = $_GET["empresa"] ?? "MATRIZ";
 $quitada = $_GET["quitada"] ?? "";
 $vencida = $_GET["vencida"] ?? "";
 $hoje = $_GET["hoje"] ?? "";
@@ -27,7 +28,7 @@ $columns = array(
     "obs");
 $sql_cols = "id,vencimento,pagamento,valor,tipo,conta,emissao,documento,fornecedor,descricao,vence,empresa,obs";
 $sql_from = "FROM vw_movimentos";
-$sql_where = "WHERE 1=1 ";
+$sql_where = "WHERE empresa='{$empresa}' ";
 $vence = [];
 if($quitada=="true"){
     $vence[]=0 ;
