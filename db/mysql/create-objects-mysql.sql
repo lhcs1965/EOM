@@ -100,19 +100,19 @@ SELECT
     m.descricao,
     CASE 
 	    WHEN m.pagamento IS NOT NULL
-	    THEN 'Quitada'
+	    THEN 0 -- 'Quitada'
     	WHEN m.vencimento < CURDATE() AND ISNULL(m.pagamento)
-    	THEN 'Vencida'
+    	THEN 1 -- 'Vencida'
     	WHEN m.vencimento = CURDATE() 
-    	THEN 'Hoje'
+    	THEN 2 -- 'Hoje'
     	WHEN m.vencimento = DATE_ADD(CURDATE(), INTERVAL 1 DAY) 
-    	THEN 'Amanhã'
+    	THEN 3 -- 'Amanhã'
     	WHEN WEEKOFYEAR(m.vencimento)=WEEKOFYEAR(CURDATE()) 
-    	THEN 'Esta Semana'
+    	THEN 4 -- 'Nesta Semana'
     	WHEN WEEKOFYEAR(m.vencimento)=WEEKOFYEAR(DATE_ADD(CURDATE(),interval 7 DAY))
-    	THEN 'Proxima Semana'
-    	ELSE 'Em Breve'
-    END AS vencendo,
+    	THEN 5 -- 'Proxima Semana'
+    	ELSE 6 -- 'Em Breve'
+    END AS vence,
     m.vencimento < CURDATE() AND ISNULL(m.pagamento) AS vencida,
     e.nome_fantasia AS empresa,
     m.obs

@@ -1,9 +1,14 @@
 <?php
 
 require_once("db-connection.php");
+$quitada = $_GET["quitada"] ?? "";
+$vencida = $_GET["vencida"] ?? "";
+$hoje = $_GET["hoje"] ?? "";
+$amanha = $_GET["amanha"] ?? "";
+$semana = $_GET["semana"] ?? "";
+$proxima = $_GET["proxima"] ?? "";
+$breve = $_GET["breve"] ?? "";
 $empresa_filter = $_GET["empresa_filter"] ?? "";
-$vencida_filter = $_GET["vencida_filter"] ?? "";
-$vencendo_filter = $_GET["vencendo_filter"] ?? "";
 $search = $_REQUEST['search']['value'] ?? "";
 $columns = array(
     null,
@@ -23,18 +28,38 @@ $columns = array(
 $sql_cols = "id,vencimento,pagamento,valor,tipo,conta,emissao,documento,fornecedor,descricao,vence,empresa,obs";
 $sql_from = "FROM vw_movimentos";
 $sql_where = "WHERE 1=1 ";
+$vence = [];
+if($quitada=="true"){
+    $vence[]=0 ;
+}
+if($vencida=="true"){
+    $vence[]=1 ;
+}
+if($hoje=="true"){
+    $vence[]=2 ;
+}
+if($amanha=="true"){
+    $vence[]=3 ;
+}
+if($semana=="true"){
+    $vence[]=4 ;
+}
+if($proxima=="true"){
+    $vence[]=5 ;
+}
+if($breve=="true"){
+    $vence[]=6 ;
+}
+
+$vence = implode(",", $vence);
+if($vence!=""){
+    $sql_where .= " AND vence IN ($vence) ";
+}
 
 if($empresa_filter!=""){
     $sql_where .= " AND empresa = '{$empresa_filter}' ";
 }
 
-if($vencida_filter!=""){
-    $sql_where .= " AND vencida = {$vencida_filter} ";
-}
-
-if($vencendo_filter!=""){
-    $sql_where .= " AND vencendo = {$vencendo_filter} ";
-}
 
 // se houver um parâmetro de pesquisa, $requestData['search']['value'] contém o parâmetro de pesquisa
 if($search != ""){

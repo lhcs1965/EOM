@@ -1,10 +1,25 @@
 const APP = "movimentos"
+function get_fix_filter(){
+    const result = "?quitada=" + document.getElementById("cb-quitada").checked
+                 + "&vencida=" + document.getElementById("cb-vencida").checked
+                 + "&hoje=" + document.getElementById("cb-hoje").checked
+                 + "&amanha=" + document.getElementById("cb-amanha").checked
+                 + "&semana=" + document.getElementById("cb-semana").checked
+                 + "&proxima=" + document.getElementById("cb-proxima").checked
+                 + "&breve=" + document.getElementById("cb-breve").checked
+    return(result)
+}
+function set_fix_filter(){
+    reload = "db/get-"+APP+".php"+get_fix_filter()
+    table.ajax.url(reload).load()
+}
+
 const note_dialog  = new bootstrap.Modal(document.getElementById("note-dialog"))
 // const confirm_dialog = new bootstrap.Modal(document.getElementById("confirm-dialog"))
-const local_filter = document.getElementById("local_filter").innerHTML
-const owner_filter = document.getElementById("owner_filter").innerHTML
-const table_filter = document.getElementById("table_filter").innerHTML
-const field_filter = document.getElementById("field_filter").innerHTML
+// const local_filter = document.getElementById("local_filter").innerHTML
+// const owner_filter = document.getElementById("owner_filter").innerHTML
+// const table_filter = document.getElementById("table_filter").innerHTML
+// const field_filter = document.getElementById("field_filter").innerHTML
 var action=""
 // var clear_local_filter = document.getElementById("clear-local-filter")
 
@@ -67,19 +82,7 @@ function btn_filter(name,data){
     return ret
 }
 
-function btn_empty(){
-    reload = "db/get-"+APP+".php"+get_fix_filter()
-    table.ajax.url(reload).load()
-}
 
-function get_fix_filter(){
-    const result = "?local_filter=" + document.getElementById("local_filter").innerHTML
-                 + "&owner_filter=" + document.getElementById("owner_filter").innerHTML
-                 + "&table_filter=" + document.getElementById("table_filter").innerHTML
-                 + "&field_filter=" + document.getElementById("field_filter").innerHTML
-                 + "&empty_filter=" + document.getElementById("empty-filter").checked
-    return(result)
-}
 
 function set_filter(filter_name,filter_value){
     const hide_filter = "hide-"+filter_name.replace("_","-")
@@ -105,13 +108,13 @@ function search_all(){
     window.location.href = "found-field-index.php?items=" + items.toString()
 }
 
-window.addEventListener("load",function() {
-    document.getElementById("hide-local-filter").toggleAttribute("hidden",document.getElementById("local_filter").innerHTML=="")
-    document.getElementById("hide-owner-filter").toggleAttribute("hidden",document.getElementById("owner_filter").innerHTML=="")
-    document.getElementById("hide-table-filter").toggleAttribute("hidden",document.getElementById("table_filter").innerHTML=="")
-    document.getElementById("hide-field-filter").toggleAttribute("hidden",document.getElementById("field_filter").innerHTML=="")
-    // document.getElementById("hide-"+filter_name).toggleAttribute("hidden",filter_value=="")
-})
+// window.addEventListener("load",function() {
+//     document.getElementById("hide-local-filter").toggleAttribute("hidden",document.getElementById("local_filter").innerHTML=="")
+//     document.getElementById("hide-owner-filter").toggleAttribute("hidden",document.getElementById("owner_filter").innerHTML=="")
+//     document.getElementById("hide-table-filter").toggleAttribute("hidden",document.getElementById("table_filter").innerHTML=="")
+//     document.getElementById("hide-field-filter").toggleAttribute("hidden",document.getElementById("field_filter").innerHTML=="")
+//     // document.getElementById("hide-"+filter_name).toggleAttribute("hidden",filter_value=="")
+// })
 
 var table = $('#data-table').DataTable({
     processing : true,
@@ -124,14 +127,14 @@ var table = $('#data-table').DataTable({
         return:true
     },
     scrollCollapse: false,
-    ajax : "db/get-"+APP+".php?page="+APP,
+    ajax : "db/get-"+APP+".php"+get_fix_filter(),
     language : { url: 'config/pt-BR.json' },
     columnDefs: [{ targets: '_all', className:"align-middle"}],
     order:[],
     createdRow: function( row, data, dataIndex){
-        if( data[10] == "Hoje"){
+        if( data[10] == 2){
             $(row).addClass('fw-bold')
-        } else if(data[10] == "Vencida"){
+        } else if(data[10] == 1){
             $(row).addClass('fw-bold bg-danger-subtle')
         }
     },
@@ -199,6 +202,18 @@ var table = $('#data-table').DataTable({
             data:10,
             title: "VENCE",
             orderable: true,
+            render: function(data,type,row){
+                const status=[
+                    'Quitada',
+                    'Vencida',
+                    'Hoje',
+                    'Amanhã',
+                    'Nesta Semana',
+                    'Na próxima Semana',
+                    'Em breve'
+                ]
+                return status[data]
+            }
         },
         {
             className: "dt-control align-middle",

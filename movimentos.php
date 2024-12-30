@@ -30,60 +30,45 @@
         <link rel='stylesheet' href='css/custom.css'>
     </head>
     <body>
-        <div class="d-flex flex-row p-3 fixed-top justify-content-between align-items-center bg-success text-bg-primary fw-bold">
+        <div class="d-flex flex-row p-3 fixed-top justify-content-between align-items-center bg-success text-bg-primary">
             <div class="col-sm-auto">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-light" onclick="import_objects('delete','<?=$page?>')" data-toggle="tooltip" title="Importar arquivox XML das NFe">
                         <i class="bi bi-file-earmark-arrow-down"></i>
                         Importar NFe    
                     </button>
-                    <button type="button" class="btn btn-light" onclick="delete_objects('delete','<?=$page?>')" data-toggle="tooltip" title="Excluir <?=$menu?> selecionados com todas as <?=$over?>">
-                        <i class="bi bi-trash3"></i>
-                    </button>
                 </div>
             </div>
             <div class="col-sm-auto text-light">
-                <span id="show-hide-sigrah" <?php if($page=="local"){echo "hidden";}else{echo "";}?> >
-                    &#160;<span id="sigrah-filter"></span>
-                    <a href="javascript:void(0)" onclick="set_filter('local_filter','SIGRAH.pbh')" class="btn btn-sm btn-outline-light text-decoration-none fw-bold">
-                        SIGRAH
-                    </a>
-                </span>
-                <span id="show-hide-empty" <?php if($page=="local" or $page=="owner"){echo "hidden";}else{echo "";}?> >
-                    &#160;
-                    tabelas vazias
-                    <input type="checkbox" id="empty-filter" value="" onclick="btn_empty()">
-                    &#160;
-                </span>
-                <span id="hide-local-filter" hidden>
-                    &#160;
-                    <b>servidor=[&#160;<span class="text-warning" id="local_filter"><?=$local_filter?></span>&#160;]</b>
-                    <a href="javascript:void(0)" onclick="set_filter('local_filter','')" class="text-warning text-decoration-none">
-                        <i class="bi bi-x"></i>
-                    </a>
-                </span>
-                <span id="hide-owner-filter" hidden>
-                    &#160;
-                    <b>schema=[&#160;<span class="text-warning" id="owner_filter"><?=$owner_filter?></span>&#160;]</b>
-                    <a href="javascript:void(0)" onclick="set_filter('owner_filter','')" class="text-warning text-decoration-none">
-                        <i class="bi bi-x"></i>
-                    </a>
-                </span>
-                <span id="hide-table-filter" hidden> 
-                    &#160;
-                    <b>tabela=[&#160;<span class="text-warning" id="table_filter"><?=$table_filter?></span>&#160;]</b>
-                    <a href="javascript:void(0)" onclick="set_filter('table_filter','')" class="text-warning text-decoration-none">
-                        <i class="bi bi-x"></i>
-                    </a>
-                </span>
-                <span id="hide-field-filter" hidden>
-                    &#160;
-                    <b>coluna=[&#160;<span class="text-warning" id="field_filter"><?=$field_filter?></span>&#160;]</b>
-                    <a href="javascript:void(0)" onclick="set_filter('field_filter','')" class="text-warning text-decoration-none">
-                        <i class="bi bi-x"></i>
-                    </a>
-                </span>
+                <a href="javascript:void(0)" onclick="set_filter('local_filter','SIGRAH.pbh')" class="btn btn-sm btn-outline-light text-decoration-none fw-bold">
+                    CONTAS
+                </a>
             </div>
+            
+            <div class="col-sm-auto">
+            <span class="h6">VENCE [</span>
+                <input class="form-check-input" type="checkbox" id="cb-quitada" value="" onclick="set_fix_filter()">
+                Quitadas
+                &#160;&#160;
+                <input class="form-check-input" type="checkbox" id="cb-vencida" value="" onclick="set_fix_filter()" checked>
+                Vencidas
+                &#160;&#160;
+                <input class="form-check-input" type="checkbox" id="cb-hoje" value="" onclick="set_fix_filter()" checked>
+                Hoje
+                &#160;&#160;
+                <input class="form-check-input" type="checkbox" id="cb-amanha" value="" onclick="set_fix_filter()" checked>
+                Amanhã
+                &#160;&#160;
+                <input class="form-check-input" type="checkbox" id="cb-semana" value="" onclick="set_fix_filter()" checked>
+                Nesta semana
+                &#160;&#160;
+                <input class="form-check-input" type="checkbox" id="cb-proxima" value="" onclick="set_fix_filter()" checked>
+                Na próxima semana&#160;&#160;
+                <input class="form-check-input" type="checkbox" id="cb-breve" value="" onclick="set_fix_filter()" checked>
+                Em breve
+                <span class="h6">]</span>
+            </div>
+            
             <div class="col-sm-auto">
                 <div class="dropdown">
                     <a href="#" class="text-light text-decoration-none dropdown-toggle" role="button" data-bs-toggle="dropdown">
@@ -95,19 +80,19 @@
                 </div>
             </div>
         </div>
-        <div class='container-fluid mt-4 pt-5 px-4'>
-            <div class="btn-group" role="group">
-                <button type="button" id="teste1" class="btn btn-sm btn-warning" disabled>Pago Hoje</button>
-                <button type="button" id="teste2" class="btn btn-sm btn-warning" >Pago Hoje</button>
+        <div class='container-fluid mt-5 pt-5 px-4'>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Aplicar ações sobre as linhas selecionadas
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><button class="dropdown-item" type="button">Pago na data de vencimento</button></li>
+                    <li><button class="dropdown-item" type="button">Pago na data de hoje</button></li>
+                    <li><button class="dropdown-item" type="button">Pago na data de ontem</button></li>
+                    <li><button class="dropdown-item" type="button">Aplicar conta crédito padrão</button></li>
+                    <li><button class="dropdown-item" type="button">Aplicar conta débito padrão</button></li>
+                </ul>
             </div>
-            <span id="hide-local-filter" >
-                &#160;
-                <b>servidor=[&#160;<span class="text-warning" id="local_filter"><?=$local_filter?></span>&#160;]</b>
-                <a href="javascript:void(0)" onclick="set_filter('local_filter','')" class="text-warning text-decoration-none">
-                    <i class="bi bi-x"></i>
-                </a>
-            </span>
-
             <table id='data-table' class='table display nowarp small table-hover' style='width:100%'>
                 <thead></thead>
                 <tbody></tbody>
@@ -224,8 +209,9 @@
         <script src='js/jquery-3.7.1.js'></script>
         <script src='js/bootstrap/bootstrap.bundle.min.js'></script>
         <script src='js/datatables/dataTables.js'></script>
+        <script src="js/datatables/dataTables.bootstrap5.js"></script>
         <script src="js/datatables/moment.min.js"></script>
-        <script src="js/datatables/dateTime.js"></script>
+        <!-- <script src="js/datatables/dateTime.js"></script> -->
         <script src="js/<?=$page?>.js"></script>
     </body>
 </html>
