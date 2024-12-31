@@ -16,6 +16,52 @@ function set_fix_filter(){
     table.ajax.url(reload).load()
 }
 
+function select_all(){
+    var rows = table.rows()
+    rows.every(function(rowIndex,tableLoop,rowLoop){
+        var row = this.data()
+        var ind = row[0]
+        var sel = document.getElementById("sel"+ind)
+        sel.checked = !sel.checked
+    })
+}
+
+function get_selected(){
+    var rows = table.rows()
+    var ids = []
+    rows.every(function(rowIndex,tableLoop,rowLoop){
+        var row = this.data()
+        var ind = row[0]
+        var sel = document.getElementById("sel"+ind)
+        if(sel.checked){
+            ids.push(ind)
+        }
+    })
+    return ids.join(",")
+}
+
+async function update_movimentos(field,action,ids){
+    $.ajax({
+        method: "POST",
+        url: "db/put-action.php",
+        data: {
+            field: field,
+            action: action,
+            ids: ids,
+        },
+        success: function(data){
+            table.draw()
+        }
+    })
+}
+
+
+function apply_action(field,action){
+    console.log("entrei")
+    const ids = get_selected()
+    update_movimentos(field,action,ids)
+}
+
 function troca_empresa(){
 
 }
@@ -32,16 +78,6 @@ var action=""
 // clear_local_filter.addEventListener("click",function(){
 //     set_filter('local_filter','')
 // })
-
-function select_all(){
-    var rows = table.rows()
-    rows.every(function(rowIndex,tableLoop,rowLoop){
-        var row = this.data()
-        var ind = row[0]
-        var sel = document.getElementById("sel"+ind)
-        sel.checked = !sel.checked
-    })
-}
 
 function delete_objects(page){
     var rows = table.rows()
