@@ -1,5 +1,12 @@
 
 CREATE DATABASE eom CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- CREATE USER 'app'@'localhost' IDENTIFIED BY 'ncc1701#M';
+CREATE USER 'app'@'localhost' IDENTIFIED BY 'ncc1701#M';
+GRANT ALL PRIVILEGES ON *.* TO 'app'@'localhost' WITH GRANT OPTION;
+CREATE USER 'app'@'%' IDENTIFIED BY 'ncc1701#M';
+GRANT ALL PRIVILEGES ON *.* TO 'app'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+-- allowPublicKeyRetrieval=true
 
 -- filiais
 
