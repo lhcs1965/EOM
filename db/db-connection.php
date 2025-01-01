@@ -1,9 +1,12 @@
 <?php
-$host ="LOCALHOST";// "192.168.15.178";
+$host ="LOCALHOST";
+// $host = "192.168.15.178";
 $port = 3306;
 $name = "eom";
-$user = "app";//"root";
-$pass = "ncc1701#M";//"";
+// $user = "app";
+$user = "root";
+// $pass = "ncc1701#M";
+$pass = "";
 
 try {
     $conn = new PDO("mysql:host=$host;port=$port;dbname=$name;charset=utf8mb4", $user, $pass);//;charset=utf8mb4
