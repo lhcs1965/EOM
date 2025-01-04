@@ -1,4 +1,10 @@
 const APP = "movimentos"
+const DIR = APP + "/" + APP 
+const GET = DIR + "-get.php"
+const PUT = DIR + "-put.php"
+const NEW = DIR + "-new.php"
+const DEL = DIR + "-del.php"
+
 function get_fix_filter(){
     const result = "?empresa=" + document.getElementById("empresa").innerHTML
                  + "&quitada=" + document.getElementById("cb-quitada").checked
@@ -14,7 +20,7 @@ function get_fix_filter(){
 }
 
 function set_fix_filter(){
-    reload = APP+"/"+APP+".get.php"+get_fix_filter()
+    reload = GET + get_fix_filter()
     table.ajax.url(reload).load()
 }
 
@@ -45,7 +51,7 @@ function get_selected(){
 async function update_movimentos(field,action,ids){
     $.ajax({
         method: "POST",
-        url: APP+"/"+APP+".put-action.php",
+        url: PUT,
         data: {
             field: field,
             action: action,
@@ -59,7 +65,6 @@ async function update_movimentos(field,action,ids){
 
 
 function apply_action(field,action){
-    console.log("entrei")
     const ids = get_selected()
     update_movimentos(field,action,ids)
 }
@@ -176,7 +181,7 @@ var table = $('#data-table').DataTable({
         return:true
     },
     scrollCollapse: false,
-    ajax : APP+"/"+APP+".get.php"+get_fix_filter(),
+    ajax : GET + get_fix_filter(),
     language : { url: 'config/pt-BR.json' },
     columnDefs: [{ targets: '_all', className:"align-middle"}],
     order:[],
@@ -207,12 +212,16 @@ var table = $('#data-table').DataTable({
             data:1,
             title:'VENCIMENTO',
             visible:true,
-            render: DataTable.render.datetime('DD-MM-YYYY')
+            render: DataTable.render.datetime('DD-MM-YYYY'),
+            width: 50,
+            className: "text-start",
         },
         {
             data:2,
             title:'PAGAMENTO',
             render: DataTable.render.datetime('DD-MM-YYYY'),
+            width: 50,
+            className: "text-start",
         },
         {
             data:3,

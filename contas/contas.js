@@ -1,11 +1,22 @@
 const APP = "contas"
+const DIR = APP + "/" + APP 
+const GET = DIR + "-get.php"
+const PUT = DIR + "-put.php"
+const NEW = DIR + "-new.php"
+const DEL = DIR + "-del.php"
+
 function get_fix_filter(){
     const result = "?empresa=" + document.getElementById("empresa").innerHTML
+                 + "&atual=" + document.getElementById("cb-ano-atual").checked
+                 + "&anterior=" + document.getElementById("cb-ano-anterior").checked
+                //  + "&credito=" + document.getElementById("cb-conta-credito").checked
+                //  + "&debito=" + document.getElementById("cb-conta-debito").checked
+                //  + "&indefinida=" + document.getElementById("cb-conta-indefinida").checked
     return(result)
 }
 
 function set_fix_filter(){
-    reload = "db/get-"+APP+".php"+get_fix_filter()
+    reload = GET + get_fix_filter()
     table.ajax.url(reload).load()
 }
 
@@ -53,7 +64,7 @@ var table = $('#data-table').DataTable({
         return:true
     },
     scrollCollapse: false,
-    ajax : APP+"/"+APP+".get.php"+get_fix_filter(),
+    ajax : GET + get_fix_filter(),
     language : { url: 'config/pt-BR.json' },
     columnDefs: [{ targets: '_all', className:"align-middle"}],
     order:[],

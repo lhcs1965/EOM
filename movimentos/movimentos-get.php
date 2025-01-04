@@ -12,7 +12,7 @@ $conta = $_GET["conta"] ?? "false";
 $fornecedor = $_GET["fornecedor"] ?? "false";
 $empresa_filter = $_GET["empresa_filter"] ?? "";
 $search = $_REQUEST['search']['value'] ?? "";
-$columns = array(
+$columns = [
     null,
     "id",
     "vencimento",
@@ -26,7 +26,8 @@ $columns = array(
     "descricao",
     "vence",
     "empresa",
-    "obs");
+    "obs"
+];
 $sql_cols = "id,vencimento,pagamento,valor,tipo,conta,emissao,documento,fornecedor,descricao,vence,empresa,obs";
 $sql_from = "FROM vw_movimentos";
 $sql_where = "WHERE empresa='{$empresa}' ";

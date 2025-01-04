@@ -2,12 +2,41 @@
 
 require_once("../db/db-connection.php");
 $empresa = $_GET["empresa"] ?? "MATRIZ";
+$atual = $_GET["atual"] ?? "true";
+$anterior = $_GET["anterior"] ?? "false";
+// $credito = $_GET["credito"] ?? "true";
+// $debito = $_GET["debito"] ?? "true";
+$indefinida = $_GET["indefinida"] ?? "true";
 $search = $_REQUEST['search']['value'] ?? "";
 $columns = array("ano", "conta", "janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "13", "total");
 $sql_cols = "ano, conta, janeiro, fevereiro, marco, abril, maio, junho, julho, agosto, setembro, outubro, novembro, dezembro, total";
 $sql_from = "FROM vw_contas_mensal ";
 
 $sql_where = $sql_where = "WHERE empresa_id=1 ";
+
+// $conta = [];
+// if($indefinida=="true"){
+//     $conta[] = 0 ;
+// }
+// if($credito=="true"){
+//     $conta[] = 1 ;
+// }
+// if($debito=="true"){
+//     $conta[] = 2 ;
+// }
+
+// $conta = implode(",", $conta); 
+//  if($conta!= " "){
+//     $sql_where .= " AND conta_id IN ($conta)  " ;
+// }
+
+if($anterior == "true" and $atual == "false"){
+    $sql_where .= " AND ano = YEAR(CURDATE())-1 ";
+} else if($anterior == "false" and $atual == "true"){
+    $sql_where .= " AND ano = YEAR(CURDATE()) ";
+} else if($anterior == "true" and $atual == "true") {
+    $sql_where .= " AND ano IN (YEAR(CURDATE())-1,YEAR(CURDATE()))";
+}
 
 // if($empresa_filter!=""){
 //     $sql_where .= " AND empresa = '{$empresa_filter}' ";
