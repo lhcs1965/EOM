@@ -8,11 +8,13 @@ function get_fix_filter(){
                  + "&semana=" + document.getElementById("cb-semana").checked
                  + "&proxima=" + document.getElementById("cb-proxima").checked
                  + "&breve=" + document.getElementById("cb-breve").checked
+                 + "&conta=" + document.getElementById("cb-conta").checked
+                 + "&fornecedor=" + document.getElementById("cb-fornecedor").checked
     return(result)
 }
 
 function set_fix_filter(){
-    reload = "db/get-"+APP+".php"+get_fix_filter()
+    reload = APP+"/"+APP+".get.php"+get_fix_filter()
     table.ajax.url(reload).load()
 }
 
@@ -43,7 +45,7 @@ function get_selected(){
 async function update_movimentos(field,action,ids){
     $.ajax({
         method: "POST",
-        url: "db/put-action.php",
+        url: APP+"/"+APP+".put-action.php",
         data: {
             field: field,
             action: action,
@@ -66,7 +68,7 @@ function troca_empresa(){
 
 }
 
-const note_dialog  = new bootstrap.Modal(document.getElementById("note-dialog"))
+// const note_dialog  = new bootstrap.Modal(document.getElementById("note-dialog"))
 // const confirm_dialog = new bootstrap.Modal(document.getElementById("confirm-dialog"))
 // const local_filter = document.getElementById("local_filter").innerHTML
 // const owner_filter = document.getElementById("owner_filter").innerHTML
@@ -166,15 +168,15 @@ var table = $('#data-table').DataTable({
     pageLength: 20,
     pagingType : 'first_last_numbers',
     lengthMenu: [
-        [10,15,20,25,50,100],
-        [10,15,20,25,50,100]
+        [10,15,20,25,50,100,250,500],
+        [10,15,20,25,50,100,250,500]
     ],
     searching: true,
     search:{
         return:true
     },
     scrollCollapse: false,
-    ajax : "db/get-"+APP+".php"+get_fix_filter(),
+    ajax : APP+"/"+APP+".get.php"+get_fix_filter(),
     language : { url: 'config/pt-BR.json' },
     columnDefs: [{ targets: '_all', className:"align-middle"}],
     order:[],
@@ -182,7 +184,7 @@ var table = $('#data-table').DataTable({
         if(data[10] == 2){
             $(row).addClass('fw-bold')
         } else if(data[10] == 1){
-            $(row).addClass('fw-bold bg-warning-subtle')
+            $(row).addClass('fw-bold bg-danger-subtle')
         }
     },
     columns:[

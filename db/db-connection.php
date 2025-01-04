@@ -1,11 +1,9 @@
 <?php
-$host ="LOCALHOST";
+$host ="localhost";
 // $host = "192.168.15.178";
 $port = 3306;
 $name = "eom";
-// $user = "app";
 $user = "root";
-// $pass = "ncc1701#M";
 $pass = "";
 
 try {

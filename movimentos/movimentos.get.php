@@ -1,6 +1,5 @@
 <?php
-
-require_once("db-connection.php");
+require_once("../db/db-connection.php");
 $empresa = $_GET["empresa"] ?? "MATRIZ";
 $quitada = $_GET["quitada"] ?? "";
 $vencida = $_GET["vencida"] ?? "";
@@ -9,6 +8,8 @@ $amanha = $_GET["amanha"] ?? "";
 $semana = $_GET["semana"] ?? "";
 $proxima = $_GET["proxima"] ?? "";
 $breve = $_GET["breve"] ?? "";
+$conta = $_GET["conta"] ?? "false";
+$fornecedor = $_GET["fornecedor"] ?? "false";
 $empresa_filter = $_GET["empresa_filter"] ?? "";
 $search = $_REQUEST['search']['value'] ?? "";
 $columns = array(
@@ -61,11 +62,18 @@ if($empresa_filter!=""){
     $sql_where .= " AND empresa = '{$empresa_filter}' ";
 }
 
+if($conta == "true" and $fornecedor == "false"){
+    $sql_where .= " AND conta_id = 1 ";
+} else if($conta == "false" and $fornecedor == "true"){
+    $sql_where .= " AND fornecedor_id = 1 ";
+} else if($conta == "true" and $fornecedor == "true") {
+    $sql_where .= " AND (conta_id = 1 OR fornecedor_id = 1)";
+}
 
 // se houver um parâmetro de pesquisa, $requestData['search']['value'] contém o parâmetro de pesquisa
 if($search != ""){
     $sql_where .= " AND (";
-    $sql_where .= " vencimento LIKE '%".$search."%' OR";
+    // $sql_where .= " vencimento LIKE '%".$search."%' OR";
     $sql_where .= " conta LIKE '%".$search."%' OR";
     $sql_where .= " documento LIKE '%".$search."%' OR";
     $sql_where .= " fornecedor LIKE '%".$search."%' OR";

@@ -124,13 +124,98 @@ SELECT
     END AS vence,
     m.vencimento < CURDATE() AND ISNULL(m.pagamento) AS vencida,
     e.codigo AS empresa,
-    m.obs
+    m.obs,
+    m.conta_id,
+    m.fornecedor_id
 FROM
-    eom.movimentos m,
-    eom.contas c,
-    eom.fornecedores f, 
-    eom.empresas e
+    movimentos m,
+    contas c,
+    fornecedores f, 
+    empresas e
 WHERE 
     c.id = m.conta_id AND 
     f.id = m.fornecedor_id AND
-    e.id = c.empresa_id
+    e.id = c.empresa_id;
+
+CREATE OR REPLACE VIEW vw_totais AS
+    SELECT 
+        YEAR(m.vencimento)       AS ano,
+        MONTH(m.vencimento)      AS mes,
+        DAY(m.vencimento)        AS dia,
+        c.nome                   AS conta,
+        c.operacao               AS tipo,
+        SUM(COALESCE(m.valor,0)) AS total
+    FROM
+        movimentos m,
+        contas c
+    WHERE 
+        c.id = m.conta_id
+    GROUP BY
+        YEAR(vencimento),
+        MONTH(m.vencimento),
+        DAY(m.vencimento),
+        c.nome,
+        c.operacao;
+
+CREATE OR REPLACE VIEW vw_totais_diarios AS
+    SELECT
+        YEAR(m.vencimento)  AS ano,
+        MONTH(m.vencimento) AS mes,
+        DAY(m.vencimento)   AS dia,
+        SUM(CASE WHEN c.operacao = 'C' THEN m.valor ELSE 0 END)    AS creditos,
+        SUM(CASE WHEN c.operacao = 'D' THEN m.valor ELSE 0 END)*-1 AS debitos,
+        SUM(CASE WHEN c.operacao = 'C' THEN m.valor ELSE 0 END)-
+        SUM(CASE WHEN c.operacao = 'D' THEN m.valor ELSE 0 END)    AS saldo,
+        SUM(CASE WHEN c.operacao = ''  THEN m.valor ELSE 0 END)    AS indefinido
+    FROM
+        movimentos m
+    INNER JOIN
+        contas c ON c.id = m.conta_id
+    GROUP BY
+        YEAR(m.vencimento),
+        MONTH(m.vencimento),
+        DAY(m.vencimento);
+
+CREATE OR REPLACE VIEW vw_totais_mensais AS
+    SELECT
+        YEAR(m.vencimento)  AS ano,
+        MONTH(m.vencimento) AS mes,
+        SUM(CASE WHEN c.operacao = 'C' THEN m.valor ELSE 0 END)    AS creditos,
+        SUM(CASE WHEN c.operacao = 'D' THEN m.valor ELSE 0 END)*-1 AS debitos,
+        SUM(CASE WHEN c.operacao = 'C' THEN m.valor ELSE 0 END)-
+        SUM(CASE WHEN c.operacao = 'D' THEN m.valor ELSE 0 END)    AS saldo,
+        SUM(CASE WHEN c.operacao = ''  THEN m.valor ELSE 0 END)    AS indefinido
+    FROM
+        movimentos m
+    INNER JOIN
+        contas c ON c.id = m.conta_id
+    GROUP BY
+        YEAR(m.vencimento),
+        MONTH(m.vencimento);
+        
+CREATE OR REPLACE VIEW vw_contas_mensal AS
+SELECT
+    c.empresa_id,
+    YEAR(m.vencimento) AS ano,
+    c.nome             AS conta,
+    SUM(CASE WHEN MONTH(m.vencimento) = 01 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "janeiro",
+    SUM(CASE WHEN MONTH(m.vencimento) = 02 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "fevereiro",
+    SUM(CASE WHEN MONTH(m.vencimento) = 03 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "marco",
+    SUM(CASE WHEN MONTH(m.vencimento) = 04 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "abril",
+    SUM(CASE WHEN MONTH(m.vencimento) = 05 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "maio",
+    SUM(CASE WHEN MONTH(m.vencimento) = 06 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "junho",
+    SUM(CASE WHEN MONTH(m.vencimento) = 07 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "julho",
+    SUM(CASE WHEN MONTH(m.vencimento) = 08 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "agosto",
+    SUM(CASE WHEN MONTH(m.vencimento) = 09 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "setembro",
+    SUM(CASE WHEN MONTH(m.vencimento) = 10 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "outubro",
+    SUM(CASE WHEN MONTH(m.vencimento) = 11 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "novembro",
+    SUM(CASE WHEN MONTH(m.vencimento) = 12 THEN CASE WHEN c.operacao='D' THEN -m.valor ELSE m.valor END ELSE 0 END) AS "dezembro",
+    SUM(CASE WHEN c.operacao='D'                                         THEN -m.valor ELSE m.valor END           ) AS "total"
+FROM
+    movimentos m
+INNER JOIN 
+    contas c ON c.id = m.conta_id
+GROUP BY
+    c.empresa_id,
+    YEAR(vencimento),
+    c.nome;

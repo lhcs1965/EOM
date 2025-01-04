@@ -1,6 +1,6 @@
 <?php
 
-include_once "db-connection.php";
+include_once "../db/db-connection.php";
 
 $field = $_POST["field"];
 $action = $_POST["action"];
@@ -26,7 +26,7 @@ if($action=="vencimento"){
 
 $sql = "
     UPDATE
-        eom.movimentos
+        movimentos
     SET
         {$field} = {$value}
     WHERE
