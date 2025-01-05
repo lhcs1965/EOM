@@ -4,6 +4,7 @@ const GET = DIR + "-get.php"
 const PUT = DIR + "-put.php"
 const NEW = DIR + "-new.php"
 const DEL = DIR + "-del.php"
+const dialog  = new bootstrap.Modal(document.getElementById("dialog"))
 
 function get_fix_filter(){
     const result = "?empresa=" + document.getElementById("empresa").innerHTML
@@ -63,17 +64,37 @@ async function update_movimentos(field,action,ids){
     })
 }
 
-
 function apply_action(field,action){
     const ids = get_selected()
     update_movimentos(field,action,ids)
+}
+
+function edit_dialog(){
+    var rows = table.rows()
+    rows.every(function(rowIndex,tableLoop,rowLoop){
+        var row = this.data()
+        var ind = row[0]
+        var sel = document.getElementById("sel"+ind)
+        if(sel.checked){
+            document.getElementById("documento").value = row[7]
+            document.getElementById("emissao").value = row[6]
+            document.getElementById("descricao").value = row[9]
+            document.getElementById("fornecedor").value = row[8]
+            document.getElementById("valor").value = row[3]
+            document.getElementById("vencimento").value = row[11]
+            document.getElementById("pagamento").value = row[2]
+            document.getElementById("conta").value = row[5]
+            document.getElementById("obs").value = row[12]
+            dialog.show()
+            // stop
+        }
+    })
 }
 
 function troca_empresa(){
 
 }
 
-// const note_dialog  = new bootstrap.Modal(document.getElementById("note-dialog"))
 // const confirm_dialog = new bootstrap.Modal(document.getElementById("confirm-dialog"))
 // const local_filter = document.getElementById("local_filter").innerHTML
 // const owner_filter = document.getElementById("owner_filter").innerHTML

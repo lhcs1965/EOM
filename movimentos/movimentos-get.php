@@ -106,6 +106,7 @@ $cursor->execute();
 $data=null;
 while($data_row = $cursor->fetch(PDO::FETCH_ASSOC)){
     $data_col = [];
+    
     $data_col[] = $data_row["id"];
     $data_col[] = $data_row["vencimento"];
     $data_col[] = $data_row["pagamento"];
