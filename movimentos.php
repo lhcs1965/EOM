@@ -6,7 +6,7 @@
         $menu = strtoupper($page); 
         $menu_items = [
             ["Movimentos","movimentos.php"],
-            ["Resumo"    ,"resumo.php"],
+            // ["Resumo"    ,"resumo.php"],
             ["Contas"    ,"contas.php"],
         ];
         $menu_html = "";

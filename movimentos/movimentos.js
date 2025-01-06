@@ -4,7 +4,31 @@ const GET = DIR + "-get.php"
 const PUT = DIR + "-put.php"
 const NEW = DIR + "-new.php"
 const DEL = DIR + "-del.php"
+
 const dialog  = new bootstrap.Modal(document.getElementById("dialog"))
+
+const documento  = document.getElementById("documento")
+const emissao    = document.getElementById("emissao")
+const descricao  = document.getElementById("descricao")
+const fornecedor = document.getElementById("fornecedor")
+const valor      = document.getElementById("valor")
+const vencimento = document.getElementById("vencimento")
+const pagamento  = document.getElementById("pagamento")
+const conta      = document.getElementById("conta")
+const obs        = document.getElementById("obs")
+
+const values = {
+    "documento"  : "",
+    "emissao"    : "",
+    "descricao"  : "",
+    "fornecedor" : "",
+    "valor"      : "",
+    "vencimento" : "",
+    "pagamento"  : "",
+    "conta"      : "",
+    "obs"        : "",
+}
+var id = 0;
 
 function get_fix_filter(){
     const result = "?empresa=" + document.getElementById("empresa").innerHTML
@@ -49,7 +73,7 @@ function get_selected(){
     return ids.join(",")
 }
 
-async function update_movimentos(field,action,ids){
+async function update_action(field,action,ids){
     $.ajax({
         method: "POST",
         url: PUT,
@@ -66,46 +90,61 @@ async function update_movimentos(field,action,ids){
 
 function apply_action(field,action){
     const ids = get_selected()
-    update_movimentos(field,action,ids)
+    update_action(field,action,ids)
 }
 
-function edit_dialog(){
-    var rows = table.rows()
-    rows.every(function(rowIndex,tableLoop,rowLoop){
-        var row = this.data()
-        var ind = row[0]
-        var sel = document.getElementById("sel"+ind)
-        if(sel.checked){
-            document.getElementById("documento").value = row[7]
-            document.getElementById("emissao").value = row[6]
-            document.getElementById("descricao").value = row[9]
-            document.getElementById("fornecedor").value = row[8]
-            document.getElementById("valor").value = row[3]
-            document.getElementById("vencimento").value = row[11]
-            document.getElementById("pagamento").value = row[2]
-            document.getElementById("conta").value = row[5]
-            document.getElementById("obs").value = row[12]
-            dialog.show()
-            // stop
+async function update(field,value){
+    $.ajax({
+        method: "POST",
+        url: PUT,
+        data: {
+            id    : id,
+            field : field,
+            value : value,
+        },
+        success: function(data){
+            values[field] = value
+            table.draw()
         }
     })
+}
+
+function edit(row){
+    id = row[0]
+    values["documento" ] = row[7]
+    values["emissao"   ] = row[6]
+    values["descricao" ] = row[9]
+    values["fornecedor"] = row[8]
+    values["valor"     ] = row[3]
+    values["vencimento"] = row[1]
+    values["pagamento" ] = row[2]
+    values["conta"     ] = row[5]
+    values["obs"       ] = row[12]
+    documento.value      = row[7]
+    emissao.value        = row[6]
+    descricao.value      = row[9]
+    fornecedor.value     = row[8]
+    valor.value          = row[3]
+    vencimento.value     = row[1]
+    pagamento.value      = row[2]
+    conta.value          = row[5]
+    obs.value            = row[12]
+    dialog.show()
+}
+
+function save(field){
+    const new_value = document.getElementById(field).value
+    const old_value = values[field]
+    if(new_value!=old_value){
+        update(field,new_value)
+    }
 }
 
 function troca_empresa(){
 
 }
 
-// const confirm_dialog = new bootstrap.Modal(document.getElementById("confirm-dialog"))
-// const local_filter = document.getElementById("local_filter").innerHTML
-// const owner_filter = document.getElementById("owner_filter").innerHTML
-// const table_filter = document.getElementById("table_filter").innerHTML
-// const field_filter = document.getElementById("field_filter").innerHTML
 var action=""
-// var clear_local_filter = document.getElementById("clear-local-filter")
-
-// clear_local_filter.addEventListener("click",function(){
-//     set_filter('local_filter','')
-// })
 
 function delete_objects(page){
     var rows = table.rows()
@@ -177,14 +216,6 @@ function search_all(){
     })
     window.location.href = "found-field-index.php?items=" + items.toString()
 }
-
-// window.addEventListener("load",function() {
-//     document.getElementById("hide-local-filter").toggleAttribute("hidden",document.getElementById("local_filter").innerHTML=="")
-//     document.getElementById("hide-owner-filter").toggleAttribute("hidden",document.getElementById("owner_filter").innerHTML=="")
-//     document.getElementById("hide-table-filter").toggleAttribute("hidden",document.getElementById("table_filter").innerHTML=="")
-//     document.getElementById("hide-field-filter").toggleAttribute("hidden",document.getElementById("field_filter").innerHTML=="")
-//     // document.getElementById("hide-"+filter_name).toggleAttribute("hidden",filter_value=="")
-// })
 
 var table = $('#data-table').DataTable({
     processing : true,
@@ -262,7 +293,6 @@ var table = $('#data-table').DataTable({
         {
             data:6,
             title: "EMISSÃO",
-            // className: 'dt-right',
             render: DataTable.render.datetime('DD-MM-YYYY'),
             visible: false,
         },
@@ -318,34 +348,6 @@ var table = $('#data-table').DataTable({
             orderable: false,
             visible: false,
         },
-                    // render:function(data,type,row){
-            //     const ret = '<div class="align-items-center d-flex">' 
-            //               + '<div class="btn-group" role="group">'
-            //               + '<img class="btn btn-sm btn-warning" '
-            //               + 'data-bs-toggle="modal" data-bs-target="#note-dialog" '
-            //               + 'src="/img/edit_16.svg" onclick="show_note_dialog('
-            //               + row[0]
-            //               + ')"></div>&#160;'
-            //               + data 
-            //               + '</div>'
-            //     return ret
-            // }
-
-                    // render:function(data,type){
-            //     const ret = '<div class="align-items-center d-flex">' 
-            //               + '<div class="btn-group" role="group">'
-            //               + '<img class="btn btn-sm btn-warning" '
-            //               + 'src="/img/arrow-right-square.svg" '
-            //               + 'onclick="javascript:location.href=' //\'owner-index.php?local_filter='
-            //               + '\'page.php?page=owner&menu=SCHEMAS&over=Tabelas&local_filter='
-            //               + data
-            //               + '\'"></div>&#160;'
-            //               + data 
-            //               + '</div>'
-                
-            //     return ret
-            // }
-
     ],
 })
 
@@ -355,164 +357,22 @@ $('#data-table').on('click','td.dt-control',function(){
     if(row.child.isShown()){
         row.child.hide()
         tr.removeClass('shown')
+        dialog.hide()
     }
     else{
         row.child(format_child(row.data())).show()
         tr.addClass('shown')
-    }
+        }
 })
 
-function format_child(d){
-    const result = 
+function format_child(row){
+    const result=
         "<dl>" +
-        "<dd>" + d[11] + "</dd>" +
-        "<dd>" + d[12] + "</dd>" +
+        "<dd>" + row[11] + "</dd>" +
+        "<dd>" + row[12] + "</dd>" +
         "</dl>"+
-        "<dl>Emitada em:<dd>"+d[6]+"</dd:</dl>"
+        "<dl>Emitada em:<dd>"+row[6]+"</dd></dl>"
+    edit(row)
     return(result)
 }
-
-async function show_note_dialog(id) {
-    const data = await fetch("db/get-"+APP+"-note.php?id=" + id)
-    const cols = await data.json()
-
-    document.getElementById("local-id").innerHTML = cols["data"].local_id
-    document.getElementById("local-host").value = cols["data"].local_host
-    document.getElementById("local-name").value = cols["data"].local_name
-    document.getElementById("local-type").value = cols["data"].local_type
-    document.getElementById("local-user").value = cols["data"].local_user
-    document.getElementById("local-pass").value = cols["data"].local_pass
-    document.getElementById("local-note").value = cols["data"].local_note
-    document.getElementById("local-osql").value = cols["data"].local_osql
-    document.getElementById("local-tsql").value = cols["data"].local_tsql
-    document.getElementById("local-fsql").value = cols["data"].local_fsql
-    document.getElementById("note-dialog-title").innerHTML = "EDITAR SERVIDOR"
-
-    note_dialog.show()
-}
-
-async function update_note(){
-    const local_id = document.getElementById("local-id").innerHTML
-    const local_host = document.getElementById("local-host").value
-    const local_name = document.getElementById("local-name").value
-    const local_type = document.getElementById("local-type").value
-    const local_user = document.getElementById("local-user").value
-    const local_pass = document.getElementById("local-pass").value
-    const local_note = document.getElementById("local-note").value
-    const local_osql = document.getElementById("local-osql").value
-    const local_tsql = document.getElementById("local-tsql").value
-    const local_fsql = document.getElementById("local-fsql").value
-    const target_url = function(){
-        if(document.getElementById("note-dialog-title").innerHTML=="EDITAR SERVIDOR"){
-            return "db/put-local-note.php"
-        }else{
-            return "db/post-local-note.php"
-        }
-    }
-
-    $.ajax({
-        method: "POST",
-        url: target_url(),
-        data: {
-            id: local_id,
-            host: local_host,
-            name: local_name,
-            type: local_type,
-            user: local_user,
-            pass: local_pass,
-            note: local_note,
-            osql: local_osql,
-            tsql: local_tsql,
-            fsql: local_fsql
-        },
-        success: function(data){
-            table.draw()
-        }
-    })
-}
-
-
-// function select_all(){
-//     var rows = table.rows()
-//     rows.every(function(rowIndex,tableLoop,rowLoop){
-//         var row = this.data()
-//         var ind = row[0]
-//         var sel = document.getElementById("sel"+ind)
-//         sel.checked = !sel.checked
-//     })
-// }
-
-// function import_objects(act){
-//     document.getElementById("cd-header").innerHTML = "IMPORTAR NOVOS SCHEMAS"
-//     document.getElementById("cd-body").innerHTML = "Importar Schemas dos servidores selecionados?<BR><BR>Esta operação poderá demorar vários minutos!"
-//     action = act
-//     confirm_dialog.show()
-// }
-
-// function delete_objects(act){
-//     document.getElementById("cd-header").innerHTML = "EXLUIR SERVIDORES"
-//     document.getElementById("cd-body").innerHTML = "Excluir Servidores selecionados?<BR><BR>Todos os Schemas, Tabelas e Colunas também serão excluídos!"
-//     action = act
-//     confirm_dialog.show()
-// }
-
-// function confirm(){
-//     if(action == "import"){
-//         search_all()
-//     } else if(action == "delete"){
-//         delete_all()
-//     }
-// }
-
-// function insert_objects(){
-//     document.getElementById(APP+"-id").innerHTML = null
-//     document.getElementById(APP+"-host").value = null
-//     document.getElementById(APP+"-name").value = null
-//     document.getElementById(APP+"-type").value = null
-//     document.getElementById(APP+"-user").value = null
-//     document.getElementById(APP+"-pass").value = null
-//     document.getElementById(APP+"-note").value = null
-//     document.getElementById(APP+"-osql").value = null
-//     document.getElementById(APP+"-tsql").value = null
-//     document.getElementById(APP+"-fsql").value = null
-//     document.getElementById("note-dialog-title").innerHTML = "NOVO SERVIDOR"
-
-//     note_dialog.show()
-// }
-
-
-
-// function search_all(){
-//     var rows = table.rows()
-//     var items = []
-//     rows.every(function(rowIndex,tableLoop,rowLoop){
-//         var row = this.data()
-//         var ind = row[0]
-//         var sel = document.getElementById("sel"+ind)
-//         if(sel.checked){
-//             items.push(row[0])
-//         }
-//     })
-//     window.location.href = "found-owner-index.php?items=" + items.toString()
-// }
-
-// function delete_all(){
-//     var rows = table.rows()
-//     rows.every(function(rowIndex,tableLoop,rowLoop){
-//         var row = this.data()
-//         var ind = row[0]
-//         var sel = document.getElementById("sel"+ind)
-//         if(sel.checked){
-//             delete_item(ind)
-//         }
-//     })
-// }
-
-// async function delete_item(id){
-//     search_dialog.show()
-//     const data = await fetch("db/delete-"+APP+".php?id="+id)
-//     search_dialog.hide()
-//     table.draw()
-// }
-
 

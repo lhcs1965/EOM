@@ -2,41 +2,69 @@
 
 include_once "../db/db-connection.php";
 
-$field = $_POST["field"];
-$action = $_POST["action"];
-$ids = $_POST["ids"];
+function put_action($conn){
+    $action = $_POST["action"] ?? "";
+    $field = $_POST["field"] ?? "";
+    $ids = $_POST["ids"] ?? "";
+    
+    $field = $field == "conta" ? "conta_id" : "pagamento";
 
-if($field == "conta") {
-    $field = "conta_id";
+    switch ($action) {
+        case "vencimento":
+            $value = "vencimento";
+            break;
+        case "hoje":
+            $value = "CURDATE()";
+            break;
+        case "ontem":
+            $value = "DATE_ADD(CURDATE(), INTERVAL -1 DAY)";
+            break;
+        case "credito":
+            $value = "(SELECT conta_credito_id FROM contas_padrao LIMIT 1)";
+            break;
+        case "debito":
+            $value = "(SELECT conta_debito_id FROM contas_padrao LIMIT 1)";
+            break;
+    }
+
+    $sql = "UPDATE movimentos SET {$field} = {$value} WHERE id IN ({$ids})";
+
+    $cursor = $conn->prepare($sql);
+    $cursor->execute();
+    $result = [
+        "status" => true,
+        "msg" => "ok"];
+
+    echo json_encode($result);
+}
+
+function put($conn){
+    $id = $_POST["id"];
+    $field = $_POST["field"];
+    $value = $_POST["value"];
+    $type = $_POST["type"] ?? "str";
+
+    $sql = "UPDATE movimentos SET $field = :value WHERE id = $id";
+    
+    $cursor = $conn->prepare($sql);
+    if($type=="str"){
+        $cursor->bindParam(":value" ,$value,PDO::PARAM_STR);
+    } else {
+        $cursor->bindParam(":value",$value);
+    }    
+
+    $cursor->execute();
+    $result = [
+        "status" => true,
+        "msg" => "ok"];
+
+    echo json_encode($result);
+}
+
+if(isset($_POST["action"])){
+    put_action($conn);
 } else {
-    $field = "pagamento";
+    put($conn);
 }
 
-if($action=="vencimento"){
-    $value = "vencimento";
-} else if($action== "hoje"){
-    $value = "CURDATE()";
-} else if($action== "ontem"){
-    $value = "DATE_ADD(CURDATE(), INTERVAL -1 DAY)";
-} else if($action== "credito"){
-    $value = "(SELECT conta_credito_id FROM contas_padrao LIMIT 1)";
-} else if($action== "debito"){
-    $value = "(SELECT conta_debito_id FROM contas_padrao LIMIT 1)";
-}
 
-$sql = "
-    UPDATE
-        movimentos
-    SET
-        {$field} = {$value}
-    WHERE
-        id IN ({$ids})";
-// print_r($sql);
-
-$cursor = $conn->prepare($sql);
-$cursor->execute();
-$result = [
-    "status" => true,
-    "msg" => "ok"];
-
-echo json_encode($result);

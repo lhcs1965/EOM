@@ -27,6 +27,11 @@ tfoot input {
     background-color: rgb(255, 255, 240);
     font-weight: bold;
 }
+.edit-icon {
+    background-image: url('../img/edit_16.svg');
+    background-position: center; /* Alinha a imagem ao centro */
+    background-repeat: no-repeat; /* Impede a repetição da imagem */
+}
 
 /*
 table.dataTable th{
