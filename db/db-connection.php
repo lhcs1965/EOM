@@ -3,8 +3,8 @@ $host ="localhost";
 // $host = "192.168.15.178";
 $port = 3306;
 $name = "eom";
-$user = "root";
-$pass = "";
+$user = "eom";
+$pass = "ncc1701#M";
 
 try {
     $conn = new PDO("mysql:host=$host;port=$port;dbname=$name;charset=utf8mb4", $user, $pass);//;charset=utf8mb4

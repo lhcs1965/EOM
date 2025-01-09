@@ -330,11 +330,15 @@ var table = $('#data-table').DataTable({
             }
         },
         {
-            className: "dt-control align-middle",
+            //title: "NOVO",
+            className: "edit-icon align-middle",
             orderable: false,
             data:      null,
             defaultContent: "",
-            width: 5
+            width: 5,
+            render: function(data,type,row){
+                return '<div class="btn btn-group btn-outline-secondary"><img src="img/pencil-fill.svg"></fill>'
+            },
         },
         {
             data:11,
@@ -351,18 +355,19 @@ var table = $('#data-table').DataTable({
     ],
 })
 
-$('#data-table').on('click','td.dt-control',function(){
+$('#data-table').on('click','td.edit-icon',function(){ //td.dt-control
     var tr = $(this).closest('tr')
     var row = table.row(tr)
-    if(row.child.isShown()){
-        row.child.hide()
-        tr.removeClass('shown')
-        dialog.hide()
-    }
-    else{
-        row.child(format_child(row.data())).show()
-        tr.addClass('shown')
-        }
+    edit(row.data())
+    // if(row.child.isShown()){
+    //     row.child.hide()
+    //     tr.removeClass('shown')
+    //     dialog.hide()
+    // }
+    // else{
+    //     row.child(format_child(row.data())).show()
+    //     tr.addClass('shown')
+    //     }
 })
 
 function format_child(row){

@@ -1,18 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <?php
+        //data-bs-theme="dark"
         $empresa = $_GET["empresa"] ?? "MATRIZ"; 
         $page = "movimentos";
         $menu = strtoupper($page); 
-        $menu_items = [
-            ["Movimentos","movimentos.php"],
-            // ["Resumo"    ,"resumo.php"],
-            ["Contas"    ,"contas.php"],
-        ];
-        $menu_html = "";
-        foreach($menu_items as $menu_item){
-            $menu_html .= '<li><a class="dropdown-item" href="'.$menu_item[1].'">'.$menu_item[0].'</a></li>';
-        }
         require_once "includes/header.php";
     ?>
     <body>
