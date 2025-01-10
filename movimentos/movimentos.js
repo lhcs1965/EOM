@@ -75,20 +75,8 @@ function get_selected(){
 }
 
 function insert(){
-    $.ajax({
-        method: "POST",
-        url: NEW,
-        data: {
-            id: null,
-        },
-        success: function(data){
-            $.when(table.draw()).then(function(){
-                const row = table.rows().data()[0]
-                edit(row)
-            })
-        }
-    })
-
+    const date = new Date()
+    edit([0,date.getDate(),date.getDate(),0,null,1,date.getDate(),null,1,null,null,null,null])
 }
 
 async function update_action(field,action,ids){
@@ -122,6 +110,7 @@ async function update(field,value){
         },
         success: function(data){
             values[field] = value
+            id = parseInt(JSON.parse(data).msg)
             table.draw()
         }
     })
@@ -150,9 +139,16 @@ function edit(row){
     dialog.show()
 }
 
-function save(field){
-    const new_value = document.getElementById(field).value
+function save(field,required){
+    const current = document.getElementById(field)
+    const new_value = current.value
     const old_value = values[field]
+    if(required==1 && new_value==""){
+        alert("Preenchimento Obrigatório")
+        current.value = old_value
+        current.focus()
+        return
+    }
     if(new_value!=old_value){
         update(field,new_value)
     }

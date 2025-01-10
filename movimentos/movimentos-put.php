@@ -43,6 +43,13 @@ function put($conn){
     $field = $_POST["field"];
     $value = $_POST["value"];
     $type = $_POST["type"] ?? "str";
+    
+    if($id==0){
+        $sql = "INSERT INTO movimentos (documento) VALUES (null) ";
+        $cursor = $conn->prepare($sql);
+        $cursor->execute();
+        $id = $conn->lastInsertId();
+    }
 
     $sql = "UPDATE movimentos SET $field = :value WHERE id = $id";
     
@@ -56,7 +63,7 @@ function put($conn){
     $cursor->execute();
     $result = [
         "status" => true,
-        "msg" => "ok"];
+        "msg" => $id];
 
     echo json_encode($result);
 }
