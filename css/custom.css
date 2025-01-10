@@ -27,9 +27,9 @@ tfoot input {
     background-color: rgb(255, 255, 240);
     font-weight: bold;
 }
-.edit-icon {
+.edit-icon{
     cursor: pointer;
-    /* background-image: url('../img/pencil-fill.svg'); */
+    /* background-image: url('../img/pencil.svg'); */
     background-position: center; /* Alinha a imagem ao centro */
     background-repeat: no-repeat; /* Impede a repetição da imagem */
 }

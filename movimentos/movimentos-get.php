@@ -86,7 +86,7 @@ if(isset($_REQUEST["order"][0]["column"])){
         .$columns[$_REQUEST["order"][0]["column"]]."   "
         .$_REQUEST['order'][0]['dir'];
 }else{
-    $sql_order = " ORDER BY ID";
+    $sql_order = " ORDER BY ID DESC";
 }
 //limit
 if(isset($_REQUEST['start']) && $_REQUEST['length'] != -1) {

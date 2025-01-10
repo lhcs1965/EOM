@@ -57,6 +57,7 @@ function select_all(){
         var sel = document.getElementById("sel"+ind)
         sel.checked = !sel.checked
     })
+    x=document.getElementById("sss").innerHTML
 }
 
 function get_selected(){
@@ -71,6 +72,23 @@ function get_selected(){
         }
     })
     return ids.join(",")
+}
+
+function insert(){
+    $.ajax({
+        method: "POST",
+        url: NEW,
+        data: {
+            id: null,
+        },
+        success: function(data){
+            $.when(table.draw()).then(function(){
+                const row = table.rows().data()[0]
+                edit(row)
+            })
+        }
+    })
+
 }
 
 async function update_action(field,action,ids){
@@ -337,7 +355,7 @@ var table = $('#data-table').DataTable({
             defaultContent: "",
             width: 5,
             render: function(data,type,row){
-                return '<div class="btn btn-group btn-outline-secondary"><img src="img/pencil-fill.svg"></fill>'
+                return '<div class="btn btn-group btn-secondary"><img src="img/pencil.svg"></div>'
             },
         },
         {
