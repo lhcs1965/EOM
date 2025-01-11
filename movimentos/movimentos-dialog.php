@@ -50,7 +50,7 @@
                     </div>
                     <div class="col">
                         <input hidden disabled class="form-control form-control-sm" type="text" id="fornecedor" value="" onblur="save('fornecedor',0)">
-                        <select class="form-select" id="fornecedor_id" aria-label="Default select example" onchange="save('fornecedor_id',1)">
+                        <select class="form-select form-select-sm" id="fornecedor_id" aria-label="Default select example" onchange="save('fornecedor_id',1)">
                             <?=$select_fornecedor?>
                         </select>
                      </div>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="col">
                         <input hidden disabled class="form-control form-control-sm" type="text" id="conta" value="" onclick="save2('conta',1)">
-                        <select class="form-select" id="conta_id" aria-label="Default select example" onchange="save('conta_id',1)">
+                        <select class="form-select form-select-sm" id="conta_id" aria-label="Default select example" onchange="save('conta_id',1)">
                             <?=$select_conta?>
                         </select>
                      </div>
