@@ -2,11 +2,19 @@
     include_once "db/db-connection.php";
     $cursor = $conn->prepare("SELECT id, nome FROM contas ");
     $cursor->execute();
-    $html_select="";
+    $select_conta="";
     while($item = $cursor->fetch(PDO::FETCH_ASSOC)){
         $id = $item["id"];
         $nome = $item["nome"];
-        $html_select .= "<option value='$id'>$nome</option>";
+        $select_conta .= "<option value='$id'>$nome</option>";
+    }
+    $cursor = $conn->prepare("SELECT id, nome_fantasia FROM fornecedores ");
+    $cursor->execute();
+    $select_fornecedor="";
+    while($item = $cursor->fetch(PDO::FETCH_ASSOC)){
+        $id = $item["id"];
+        $nome = $item["nome_fantasia"];
+        $select_fornecedor .= "<option value='$id'>$nome</option>";
     }
 ?>
 
@@ -38,10 +46,13 @@
                 </div>
                 <div class="row g-1 m-1 mb-2">
                     <div class="col-3">
-                        <label for="fornecedor"><strong>Fornecedor:</strong></label>
+                        <label for="fornecedor_id"><strong>Fornecedor:</strong></label>
                     </div>
                     <div class="col">
-                        <input disabled class="form-control form-control-sm" type="text" id="fornecedor" value="" onblur="save('fornecedor',0)">
+                        <input hidden disabled class="form-control form-control-sm" type="text" id="fornecedor" value="" onblur="save('fornecedor',0)">
+                        <select class="form-select" id="fornecedor_id" aria-label="Default select example" onchange="save('fornecedor_id',1)">
+                            <?=$select_fornecedor?>
+                        </select>
                      </div>
                 </div>
                 <div class="row g-1 m-1 mb-2">
@@ -78,12 +89,12 @@
                 </div>
                 <div class="row g-1 m-1 mb-2">
                     <div class="col-3">
-                        <label for="conta"><strong>Conta:</strong></label>
+                        <label for="conta_id"><strong>Conta:</strong></label>
                     </div>
                     <div class="col">
-                        <input disabled class="form-control form-control-sm" type="text" id="conta" value="" onblur="save('conta',0)">
-                        <select class="form-select"aria-label="Default select example">
-                            <?=$html_select?>
+                        <input hidden disabled class="form-control form-control-sm" type="text" id="conta" value="" onclick="save2('conta',1)">
+                        <select class="form-select" id="conta_id" aria-label="Default select example" onchange="save('conta_id',1)">
+                            <?=$select_conta?>
                         </select>
                      </div>
                 </div>
@@ -92,7 +103,7 @@
                         <label for="obs"><strong>Observações:</strong></label>
                     </div>
                     <div class="col">
-                        <input class="form-control form-control-sm" type="text" id="obs" value="" onblur="save('obs',0)">
+                        <input hidden class="form-control form-control-sm" type="text" id="obs" value="" onblur="save('obs',0)">
                     </div>
                 </div>
             </div>

@@ -33,6 +33,7 @@
         <!-- <php require_once "includes/confirm-dialog.php"; ?> -->
         <?php require_once "includes/footer.php"; ?>
         <script src="<?=$page?>/<?=$page?>.js"></script>
+        <script src="<?=$page?>/<?=$page?>-dialog.js"></script>
     </body>
 </html>
 

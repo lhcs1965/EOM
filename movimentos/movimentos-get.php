@@ -26,9 +26,11 @@ $columns = [
     "descricao",
     "vence",
     "empresa",
-    "obs"
+    "obs",
+    "conta_id",
+    "fornecedor_id"
 ];
-$sql_cols = "id,vencimento,pagamento,valor,tipo,conta,emissao,documento,fornecedor,descricao,vence,empresa,obs";
+$sql_cols = "id,vencimento,pagamento,valor,tipo,conta,emissao,documento,fornecedor,descricao,vence,empresa,obs,conta_id,fornecedor_id ";
 $sql_from = "FROM vw_movimentos";
 $sql_where = "WHERE empresa='{$empresa}' ";
 $vence = [];
@@ -120,6 +122,8 @@ while($data_row = $cursor->fetch(PDO::FETCH_ASSOC)){
     $data_col[] = $data_row["vence"];
     $data_col[] = $data_row["empresa"];
     $data_col[] = $data_row["obs"];
+    $data_col[] = $data_row["conta_id"];
+    $data_col[] = $data_row["fornecedor_id"];
     $data[] = $data_col;
 }
 
