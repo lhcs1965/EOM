@@ -6,13 +6,13 @@ $(function () {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     var xmlDoc = $.parseXML(e.target.result);
-                    var emit = $(xmlDoc).find("emit");
-                    //Add the data rows.
-                    $(emit).each(function () {
-                        $(this).children().each(function (e) {
-                            $($("input:text")[e]).val($(this).text())
-                        })
-                    })
+                    var emit = $(xmlDoc).find("emit")
+                    var emis = $(xmlDoc).find("ide")
+
+                    document.getElementById("cpf_cnpj"     ).value = emit[0].children[0].textContent
+                    document.getElementById("razao_social" ).value = emit[0].children[1].textContent
+                    document.getElementById("nome_fantasia").value = emit[0].children[2].textContent
+                    document.getElementById("emissao"      ).value = emis[0].children[6].textContent.substr(0,10)
 
                     var dvTable = $("#dvTable");
                     dvTable.html("");
