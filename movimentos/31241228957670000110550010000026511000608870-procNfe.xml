@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe">
+    <NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+        <infNFe Id="NFe31241228957670000110550010000026511000608870" versao="4.00">
+            <ide>
+                <cUF>31</cUF>
+                <cNF>00060887</cNF>
+                <natOp>VENDA</natOp>
+                <mod>55</mod>
+                <serie>1</serie>
+                <nNF>2651</nNF>
+                <dhEmi>2024-12-13T09:17:25-03:00</dhEmi>
+                <dhSaiEnt>2024-12-13T09:17:25-03:00</dhSaiEnt>
+                <tpNF>1</tpNF>
+                <idDest>1</idDest>
+                <cMunFG>3171204</cMunFG>
+                <tpImp>1</tpImp>
+                <tpEmis>1</tpEmis>
+                <cDV>0</cDV>
+                <tpAmb>1</tpAmb>
+                <finNFe>1</finNFe>
+                <indFinal>0</indFinal>
+                <indPres>3</indPres>
+                <indIntermed>0</indIntermed>
+                <procEmi>0</procEmi>
+                <verProc>1.1</verProc>
+            </ide>
+            <emit>
+                <CNPJ>28957670000110</CNPJ>
+                <xNome>M2 ISOPOR COMERCIO E REPRESENTACAO LTDA</xNome>
+                <xFant>M2 ISOPOR</xFant>
+                <enderEmit>
+                    <xLgr>R PRINCIPAL</xLgr>
+                    <nro>1411</nro>
+                    <xBairro>BERNARDO DE SOUZA</xBairro>
+                    <cMun>3171204</cMun>
+                    <xMun>Vespasiano</xMun>
+                    <UF>MG</UF>
+                    <CEP>33202494</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>BRASIL</xPais>
+                    <fone>3136221830</fone>
+                </enderEmit>
+                <IE>0030691380031</IE>
+                <CRT>1</CRT>
+            </emit>
+            <dest>
+                <CNPJ>23217075000124</CNPJ>
+                <xNome>REEMBALARTE COMERCIO VAREJISTA DE EMBALAGENS LTDA</xNome>
+                <enderDest>
+                    <xLgr>RUA AMIM FARES DEBIAN</xLgr>
+                    <nro>65</nro>
+                    <xCpl>LOJA 04</xCpl>
+                    <xBairro>CENTRO</xBairro>
+                    <cMun>3106705</cMun>
+                    <xMun>Betim</xMun>
+                    <UF>MG</UF>
+                    <CEP>32600014</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>BRASIL</xPais>
+                    <fone>31996437462</fone>
+                </enderDest>
+                <indIEDest>1</indIEDest>
+                <IE>0026225350012</IE>
+                <email>oestedeminas1@yahoocombr</email>
+            </dest>
+            <det nItem="1">
+                <prod>
+                    <cProd>329</cProd>
+                    <cEAN>SEM GTIN</cEAN>
+                    <xProd>BOLO REDONDO - CIRCULO 100 X 100 MM ESPESSURA</xProd>
+                    <NCM>39031900</NCM>
+                    <CFOP>5102</CFOP>
+                    <uCom>UN</uCom>
+                    <qCom>10.0000</qCom>
+                    <vUnCom>0.8100000000</vUnCom>
+                    <vProd>8.10</vProd>
+                    <cEANTrib>SEM GTIN</cEANTrib>
+                    <uTrib>UN</uTrib>
+                    <qTrib>10.0000</qTrib>
+                    <vUnTrib>0.8100000000</vUnTrib>
+                    <indTot>1</indTot>
+                </prod>
+                <imposto>
+                    <vTotTrib>0.00</vTotTrib>
+                    <ICMS>
+                        <ICMSSN101>
+                            <orig>0</orig>
+                            <CSOSN>101</CSOSN>
+                            <pCredSN>3.61</pCredSN>
+                            <vCredICMSSN>0.29</vCredICMSSN>
+                        </ICMSSN101>
+                    </ICMS>
+                    <PIS>
+                        <PISNT>
+                            <CST>08</CST>
+                        </PISNT>
+                    </PIS>
+                    <COFINS>
+                        <COFINSNT>
+                            <CST>08</CST>
+                        </COFINSNT>
+                    </COFINS>
+                </imposto>
+            </det>
+            <det nItem="2">
+                <prod>
+                    <cProd>330</cProd>
+                    <cEAN>SEM GTIN</cEAN>
+                    <xProd>BOLO REDONDO - CIRCULO 150 X 100 MM ESPESSURA</xProd>
+                    <NCM>39031900</NCM>
+                    <CFOP>5102</CFOP>
+                    <uCom>UN</uCom>
+                    <qCom>10.0000</qCom>
+                    <vUnCom>1.7500000000</vUnCom>
+                    <vProd>17.50</vProd>
+                    <cEANTrib>SEM GTIN</cEANTrib>
+                    <uTrib>UN</uTrib>
+                    <qTrib>10.0000</qTrib>
+                    <vUnTrib>1.7500000000</vUnTrib>
+                    <indTot>1</indTot>
+                </prod>
+                <imposto>
+                    <vTotTrib>0.00</vTotTrib>
+                    <ICMS>
+                        <ICMSSN101>
+                            <orig>0</orig>
+                            <CSOSN>101</CSOSN>
+                            <pCredSN>3.61</pCredSN>
+                            <vCredICMSSN>0.63</vCredICMSSN>
+                        </ICMSSN101>
+                    </ICMS>
+                    <PIS>
+                        <PISNT>
+                            <CST>08</CST>
+                        </PISNT>
+                    </PIS>
+                    <COFINS>
+                        <COFINSNT>
+                            <CST>08</CST>
+                        </COFINSNT>
+                    </COFINS>
+                </imposto>
+            </det>
+            <det nItem="3">
+                <prod>
+                    <cProd>331</cProd>
+                    <cEAN>SEM GTIN</cEAN>
+                    <xProd>BOLO REDONDO - CIRCULO 200 X 100 MM ESPESSURA</xProd>
+                    <NCM>39031900</NCM>
+                    <CFOP>5102</CFOP>
+                    <uCom>UN</uCom>
+                    <qCom>10.0000</qCom>
+                    <vUnCom>2.9800000000</vUnCom>
+                    <vProd>29.80</vProd>
+                    <cEANTrib>SEM GTIN</cEANTrib>
+                    <uTrib>UN</uTrib>
+                    <qTrib>10.0000</qTrib>
+                    <vUnTrib>2.9800000000</vUnTrib>
+                    <indTot>1</indTot>
+                </prod>
+                <imposto>
+                    <vTotTrib>0.00</vTotTrib>
+                    <ICMS>
+                        <ICMSSN101>
+                            <orig>0</orig>
+                            <CSOSN>101</CSOSN>
+                            <pCredSN>3.61</pCredSN>
+                            <vCredICMSSN>1.08</vCredICMSSN>
+                        </ICMSSN101>
+                    </ICMS>
+                    <PIS>
+                        <PISNT>
+                            <CST>08</CST>
+                        </PISNT>
+                    </PIS>
+                    <COFINS>
+                        <COFINSNT>
+                            <CST>08</CST>
+                        </COFINSNT>
+                    </COFINS>
+                </imposto>
+            </det>
+            <det nItem="4">
+                <prod>
+                    <cProd>332</cProd>
+                    <cEAN>SEM GTIN</cEAN>
+                    <xProd>BOLO REDONDO - CIRCULO 250 X 100 MM ESPESSURA</xProd>
+                    <NCM>39031900</NCM>
+                    <CFOP>5102</CFOP>
+                    <uCom>UN</uCom>
+                    <qCom>10.0000</qCom>
+                    <vUnCom>4.9500000000</vUnCom>
+                    <vProd>49.50</vProd>
+                    <cEANTrib>SEM GTIN</cEANTrib>
+                    <uTrib>UN</uTrib>
+                    <qTrib>10.0000</qTrib>
+                    <vUnTrib>4.9500000000</vUnTrib>
+                    <indTot>1</indTot>
+                </prod>
+                <imposto>
+                    <vTotTrib>0.00</vTotTrib>
+                    <ICMS>
+                        <ICMSSN101>
+                            <orig>0</orig>
+                            <CSOSN>101</CSOSN>
+                            <pCredSN>3.61</pCredSN>
+                            <vCredICMSSN>1.79</vCredICMSSN>
+                        </ICMSSN101>
+                    </ICMS>
+                    <PIS>
+                        <PISNT>
+                            <CST>08</CST>
+                        </PISNT>
+                    </PIS>
+                    <COFINS>
+                        <COFINSNT>
+                            <CST>08</CST>
+                        </COFINSNT>
+                    </COFINS>
+                </imposto>
+            </det>
+            <det nItem="5">
+                <prod>
+                    <cProd>333</cProd>
+                    <cEAN>SEM GTIN</cEAN>
+                    <xProd>BOLO REDONDO - CIRCULO 300 X 100 MM ESPESSURA</xProd>
+                    <NCM>39031900</NCM>
+                    <CFOP>5102</CFOP>
+                    <uCom>UN</uCom>
+                    <qCom>10.0000</qCom>
+                    <vUnCom>6.9500000000</vUnCom>
+                    <vProd>69.50</vProd>
+                    <cEANTrib>SEM GTIN</cEANTrib>
+                    <uTrib>UN</uTrib>
+                    <qTrib>10.0000</qTrib>
+                    <vUnTrib>6.9500000000</vUnTrib>
+                    <indTot>1</indTot>
+                </prod>
+                <imposto>
+                    <vTotTrib>0.00</vTotTrib>
+                    <ICMS>
+                        <ICMSSN101>
+                            <orig>0</orig>
+                            <CSOSN>101</CSOSN>
+                            <pCredSN>3.61</pCredSN>
+                            <vCredICMSSN>2.51</vCredICMSSN>
+                        </ICMSSN101>
+                    </ICMS>
+                    <PIS>
+                        <PISNT>
+                            <CST>08</CST>
+                        </PISNT>
+                    </PIS>
+                    <COFINS>
+                        <COFINSNT>
+                            <CST>08</CST>
+                        </COFINSNT>
+                    </COFINS>
+                </imposto>
+            </det>
+            <det nItem="6">
+                <prod>
+                    <cProd>334</cProd>
+                    <cEAN>SEM GTIN</cEAN>
+                    <xProd>BOLO REDONDO - CIRCULO 350 X 100 MM ESPESSURA</xProd>
+                    <NCM>39031900</NCM>
+                    <CFOP>5102</CFOP>
+                    <uCom>UN</uCom>
+                    <qCom>10.0000</qCom>
+                    <vUnCom>8.9000000000</vUnCom>
+                    <vProd>89.00</vProd>
+                    <cEANTrib>SEM GTIN</cEANTrib>
+                    <uTrib>UN</uTrib>
+                    <qTrib>10.0000</qTrib>
+                    <vUnTrib>8.9000000000</vUnTrib>
+                    <indTot>1</indTot>
+                </prod>
+                <imposto>
+                    <vTotTrib>0.00</vTotTrib>
+                    <ICMS>
+                        <ICMSSN101>
+                            <orig>0</orig>
+                            <CSOSN>101</CSOSN>
+                            <pCredSN>3.61</pCredSN>
+                            <vCredICMSSN>3.21</vCredICMSSN>
+                        </ICMSSN101>
+                    </ICMS>
+                    <PIS>
+                        <PISNT>
+                            <CST>08</CST>
+                        </PISNT>
+                    </PIS>
+                    <COFINS>
+                        <COFINSNT>
+                            <CST>08</CST>
+                        </COFINSNT>
+                    </COFINS>
+                </imposto>
+            </det>
+            <total>
+                <ICMSTot>
+                    <vBC>0.00</vBC>
+                    <vICMS>0.00</vICMS>
+                    <vICMSDeson>0</vICMSDeson>
+                    <vFCPUFDest>0</vFCPUFDest>
+                    <vFCP>0</vFCP>
+                    <vBCST>0</vBCST>
+                    <vST>0</vST>
+                    <vFCPST>0</vFCPST>
+                    <vFCPSTRet>0</vFCPSTRet>
+                    <vProd>263.40</vProd>
+                    <vFrete>0.00</vFrete>
+                    <vSeg>0</vSeg>
+                    <vDesc>0.00</vDesc>
+                    <vII>0</vII>
+                    <vIPI>0.00</vIPI>
+                    <vIPIDevol>0.00</vIPIDevol>
+                    <vPIS>0.00</vPIS>
+                    <vCOFINS>0.00</vCOFINS>
+                    <vOutro>0</vOutro>
+                    <vNF>263.40</vNF>
+                    <vTotTrib>0.00</vTotTrib>
+                </ICMSTot>
+            </total>
+            <transp>
+                <modFrete>0</modFrete>
+            </transp>
+            <cobr>
+                <fat>
+                    <nFat>2651</nFat>
+                    <vOrig>263.40</vOrig>
+                    <vLiq>263.40</vLiq>
+                </fat>
+                <dup>
+                    <nDup>001</nDup>
+                    <dVenc>2025-01-03</dVenc>
+                    <vDup>263.40</vDup>
+                </dup>
+            </cobr>
+            <pag>
+                <detPag>
+                    <tPag>15</tPag>
+                    <vPag>263.40</vPag>
+                </detPag>
+            </pag>
+            <infAdic>
+                <infCpl>EMPRESA OPTANTE PELO SIMPLES NACIONAL ME EPP. PERMITE O APROVEITAMENTO DE
+                    ICMS CORRESPONDENTE AO PERCENTUAL DE 3,61% CONFORME ARTIGO 23 DA LEI
+                    COMPLEMENTAR 123/2006 E ANEXO 128/2008 ANEXO I.</infCpl>
+            </infAdic>
+        </infNFe>
+        <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <SignedInfo>
+                <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+                <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+                <Reference URI="#NFe31241228957670000110550010000026511000608870">
+                    <Transforms>
+                        <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+                        <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+                    </Transforms>
+                    <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+                    <DigestValue>YcoD3mjgSY0mnD4NbmM2ivK2ZUE=</DigestValue>
+                </Reference>
+            </SignedInfo>
+            <SignatureValue>
+                ckNAbbOKsACO+vgyque/sEti7Zs3dNGxxhrcEi2qgDk0pAaqrk0wnrHc1bOHH/aorrrAnooKR5mOoI4xGdodNb4mrE7uKqQBnVKa6hMqRTv49BipiTrVkgpnoewxNFy0TAfMFcAYQDox/8/fBS4l5d7E3g1aIDyQ8CtaRBQZeEHDZZ461CgqHWqcIGKLawliBGT7l0yBS5td5Tm16MpiXu401diMKvGy2aWezCQPX6veR4qkhqHWJ8EdqYcHU87LCbIslIERhzhZth4PIPa4KinNPeJ5MvLQ0bKVItTHqbJVft+ux+S869a84DPG98VIHTLA9szMO8BRAHnf0RoX7A==</SignatureValue>
+            <KeyInfo>
+                <X509Data>
+                    <X509Certificate>
+                        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</X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </Signature>
+    </NFe>
+    <protNFe versao="4.00">
+        <infProt Id="ID131246362151766">
+            <tpAmb>1</tpAmb>
+            <verAplic>W-3.2.73</verAplic>
+            <chNFe>31241228957670000110550010000026511000608870</chNFe>
+            <dhRecbto>2024-12-13T09:15:35-03:00</dhRecbto>
+            <nProt>131246362151766</nProt>
+            <digVal>YcoD3mjgSY0mnD4NbmM2ivK2ZUE=</digVal>
+            <cStat>100</cStat>
+            <xMotivo>Autorizado o uso da NF-e</xMotivo>
+        </infProt>
+    </protNFe>
+</nfeProc>
