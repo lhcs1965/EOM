@@ -14,34 +14,21 @@ $(function () {
                     document.getElementById("nome_fantasia").value = emit[0].children[2].textContent
                     document.getElementById("emissao"      ).value = emis[0].children[6].textContent.substr(0,10)
 
-                    var dvTable = $("#dvTable");
-                    dvTable.html("");
-                    dvTable.append(table);
                     var cobr = $(xmlDoc).find("cobr");
 
                     //Create a HTML Table element.
-                    var table = $("<table />");
-                    table[0].border = "1";
-                    //Add the header row.
-                    // cobr.eq(0).children().each(function () {
-                    //     var row = $(table[0].insertRow(-1));
-                    //     var headerCell = $("<th />");
-                    //     headerCell.html(this.nodeName);
-                    //     row.append(headerCell);
-                    // });
-                    //Add the data rows.
+                    html="<table><tr><th>Doc</th><th>Data</th><th>Valor</th></tr>"
                     $(cobr).each(function () {
                         $(this).children().each(function (e) {
-                            row = $(table[0].insertRow(-1));
-                            var cell = $("<td />");
-                            cell.html($(this).text());
-                            row.append(cell);
+                            var cols = $(this).text().replace(/ /g,'').replace("\n"," ").trim().split("\n")
+                            var n = "<td>"+cols[0]+"</td>"
+                            var d = "<td>"+cols[1]+"</td>"
+                            var v = "<td>"+cols[2]+"</td>"
+                            html += "<tr>"+n+d+v+"</tr>"
                         });
                     });
-  
-                    var dvTable = $("#dvTable");
-                    dvTable.html("");
-                    dvTable.append(table);
+                    html += "</table>"
+                    document.getElementById("dvTable").innerHTML=html
                 }
                 reader.readAsText($("#fileUpload")[0].files[0]);
             } else {
