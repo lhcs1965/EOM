@@ -28,6 +28,20 @@
             <br>
         </div>
 
+        <div class="modal" tabindex="-1" id="upload-dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">IMPORTANDO</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input type="file" id="fileUpload">
+                        <input type="button" id="upload" value="Upload" data-bs-dismiss="modal">
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <?php require_once "$page/$page-dialog.php"; ?>
         <!-- <php require_once "includes/$page/dialog2.php"; ?> -->
         <!-- <php require_once "includes/confirm-dialog.php"; ?> -->

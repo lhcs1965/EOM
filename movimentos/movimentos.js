@@ -4,7 +4,6 @@ const GET = DIR + "-get.php"
 const PUT = DIR + "-put.php"
 const NEW = DIR + "-new.php"
 const DEL = DIR + "-del.php"
-
 var id = 0;
 
 function get_fix_filter(){
@@ -69,6 +68,56 @@ async function update_action(field,action,ids){
 function apply_action(field,action){
     const ids = get_selected()
     update_action(field,action,ids)
+}
+
+function import_nfe(){
+    const upload  = new bootstrap.Modal(document.getElementById("upload-dialog"))
+    var fornecedor = ""
+    var fatura = ""
+    upload.show()
+    $(function () {
+        $("#upload").bind("click", function () {
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xml)$/
+            if (regex.test($("#fileUpload").val().toLowerCase())) {
+                if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader()
+                    reader.onload = function (e) {
+                        var xmlDoc = $.parseXML(e.target.result)
+                        var emit = $(xmlDoc).find("emit")
+                        var emis = $(xmlDoc).find("ide")
+                        var cobr = $(xmlDoc).find("cobr")
+    
+                        fornecedor += emit[0].children[0].textContent + "|"
+                        fornecedor += emit[0].children[1].textContent + "|"
+                        fornecedor += emit[0].children[2].textContent + "|"
+                        fornecedor += emis[0].children[6].textContent.substr(0,10)
+                        $(cobr).each(function () {
+                            $(this).children().each(function (e) {
+                                var cols = $(this).text().replace(/ /g,'').replace("\n"," ").trim().split("\n")
+                                fatura += cols[0] + "|" + cols[1] + "|" + cols[2] + ";"
+                            })
+                        })
+                        $.ajax({
+                            method: "POST",
+                            url: NEW,
+                            data: {
+                                fornecedor: fornecedor,
+                                fatura: fatura,
+                            },
+                            success: function(data){
+                                table.draw()
+                            }
+                        })
+                    }
+                    reader.readAsText($("#fileUpload")[0].files[0])
+                } else {
+                    alert("Este browser não suporta HTML5.")
+                }
+            } else {
+                alert("Por favor faça Upload de um arquivo XML valido.")
+            }
+        })
+    })
 }
 
 function troca_empresa(){
