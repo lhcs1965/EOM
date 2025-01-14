@@ -1,7 +1,8 @@
 <div class="d-flex gap-2 mb-3">
     <div class="btn-group" role="group">
-        <button class="btn btn-secondary" type="button" onclick="insert()">
-            <svg class="bi bi-file" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark" viewBox="0 0 16 16">
+        <button class="btn btn-secondary" type="button" onclick="insert()" value="Novo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+                <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5"/>
                 <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
             </svg>
         </button>
@@ -13,7 +14,7 @@
         </button>
     </div>
     <div class="dropdown">
-        <button class="btn btn-md btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             Aplicar ações sobre as linhas selecionadas
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
@@ -22,6 +23,7 @@
             <li><button class="dropdown-item" type="button" onclick="apply_action('pagamento','ontem')">Pago na data de ontem</button></li>
             <li><button class="dropdown-item" type="button" onclick="apply_action('conta','credito')">Aplicar conta crédito padrão</button></li>
             <li><button class="dropdown-item" type="button" onclick="apply_action('conta','debito')">Aplicar conta débito padrão</button></li>
+            <li><button class="dropdown-item" type="button" onclick="delete_objects()">Excluir linhas selecionadas</button></li>
         </ul>
     </div>
 </div>

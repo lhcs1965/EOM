@@ -69,7 +69,7 @@ function edit(row){
     values["vencimento"] = row[1]
     values["pagamento" ] = row[2]
     values["conta"     ] = row[5]
-    values["obs"       ] = row[12]
+    values["obs4"       ] = row[12]
     documento.value      = row[7]
     emissao.value        = row[6]
     descricao.value      = row[9]
@@ -85,6 +85,6 @@ function edit(row){
 }
 
 function insert(){
-    const date = new Date()
-    edit([0,date.getDate(),date.getDate(),0,null,1,date.getDate(),null,1,null,null,null,null])
+    const d = moment()
+    edit([0,d.format("YYYY-MM-DD"),null,0,null,1,d.format("YYYY-MM-DD"),null,1,null,null,null,null])
 }

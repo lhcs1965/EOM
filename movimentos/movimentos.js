@@ -5,6 +5,7 @@ const PUT = DIR + "-put.php"
 const NEW = DIR + "-new.php"
 const DEL = DIR + "-del.php"
 var id = 0;
+var action=""
 
 function get_fix_filter(){
     const result = "?empresa=" + document.getElementById("empresa").innerHTML
@@ -33,7 +34,6 @@ function select_all(){
         var sel = document.getElementById("sel"+ind)
         sel.checked = !sel.checked
     })
-    x=document.getElementById("sss").innerHTML
 }
 
 function get_selected(){
@@ -120,81 +120,35 @@ function import_nfe(){
     })
 }
 
+function delete_objects(){
+    const ids = get_selected()
+    if(confirm("Confirma exclusão das linhas selecionadas?")){
+        $.ajax({
+            method: "POST",
+            url: DEL,
+            data: {
+                ids: ids,
+            },
+            success: function(data){
+                table.draw()
+            }
+        })
+    }
+}
+
 function troca_empresa(){
 
 }
 
-var action=""
-
-function delete_objects(page){
-    var rows = table.rows()
-    rows.every(function(rowIndex,tableLoop,rowLoop){
-        var row = this.data()
-        var ind = row[0]
-        var sel = document.getElementById("sel"+ind)
-        if(sel.checked){
-            delete_item(page,ind)
-        }
-    })
-}
-
-async function delete_item(page,id){
-    // search_dialog.show()
-    // const data = await fetch("db/delete-" + page + ".php?id=" + id)
-    // table.draw()
-    $.ajax({
-        method: "DELETE",
-        url: "db/delete-" + page + ".php?id=" + id,
-        success: function(data){
-            table.draw()
-        }
-    })
-}
-
-function import_objects(act){
-    document.getElementById("cd-header").innerHTML = "IMPORTAR NOVAS COLUNAS"
-    document.getElementById("cd-body").innerHTML = "Importar Colunas das Tabelas selecionados?<BR><BR>Esta operação poderá demorar vários minutos!"
-    action = act
-    confirm_dialog.show()
-}
-
-function btn_filter(name,data){
-    const ret = '<div class="align-items-center d-flex">' 
-              + '<div class="btn-group" role="group">'
-              + '<img class="btn btn-sm btn-warning" '
-              + 'src="/img/funnel.svg" '
-              + 'onclick="set_filter'
-              + "('"+name+"','" + data + "')"
-              + '"></div>&#160;'
-              + data 
-              + '</div>'
-    return ret
-}
-
-
-
-function set_filter(filter_name,filter_value){
-    const hide_filter = "hide-"+filter_name.replace("_","-")
-    document.getElementById(hide_filter).toggleAttribute("hidden",filter_value=="")
-    document.getElementById(filter_name).innerHTML = filter_value
-    reload = "db/get-"+APP+".php"+get_fix_filter()
-    table.ajax.url(reload).load()
-    // const url = APP + "-index.php" + get_fix_filter()
-    // window.location.replace(url)
-}
-
-function search_all(){
-    var rows = table.rows()
-    var items = []
-    rows.every(function(rowIndex,tableLoop,rowLoop){
-        var row = this.data()
-        var ind = row[0]
-        var sel = document.getElementById("sel"+ind)
-        if(sel.checked){
-            items.push(row[0])
-        }
-    })
-    window.location.href = "found-field-index.php?items=" + items.toString()
+function format_child(row){
+    const result=
+        "<dl>" +
+        "<dd>" + row[11] + "</dd>" +
+        "<dd>" + row[12] + "</dd>" +
+        "</dl>"+
+        "<dl>Emitada em:<dd>"+row[6]+"</dd></dl>"
+    edit(row)
+    return(result)
 }
 
 var table = $('#data-table').DataTable({
@@ -310,7 +264,6 @@ var table = $('#data-table').DataTable({
             }
         },
         {
-            //title: "NOVO",
             className: "edit-icon align-middle",
             orderable: false,
             data:      null,
@@ -349,27 +302,22 @@ $('#data-table').on('click','td.edit-icon',function(){ //td.dt-control
     var tr = $(this).closest('tr')
     var row = table.row(tr)
     var x=row.data()
-    //var y=document.getElementById("sss").innerHTML
     edit(row.data())
-    // if(row.child.isShown()){
-    //     row.child.hide()
-    //     tr.removeClass('shown')
-    //     dialog.hide()
-    // }
-    // else{
-    //     row.child(format_child(row.data())).show()
-    //     tr.addClass('shown')
-    //     }
 })
 
-function format_child(row){
-    const result=
-        "<dl>" +
-        "<dd>" + row[11] + "</dd>" +
-        "<dd>" + row[12] + "</dd>" +
-        "</dl>"+
-        "<dl>Emitada em:<dd>"+row[6]+"</dd></dl>"
-    edit(row)
-    return(result)
-}
+$('#data-table').on('click','td.dt-control',function(){
+    var tr = $(this).closest('tr')
+    var row = table.row(tr)
+    var x=row.data()
+    if(row.child.isShown()){
+        row.child.hide()
+        tr.removeClass('shown')
+        dialog.hide()
+    }
+    else{
+        row.child(format_child(row.data())).show()
+        tr.addClass('shown')
+        }
+})
+
 
